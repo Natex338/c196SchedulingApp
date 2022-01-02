@@ -8,31 +8,20 @@ import androidx.room.Query;
 import androidx.room.Update;
 
 import com.example.c196schedulingapp.Entity.Course;
-import com.example.c196schedulingapp.Entity.Term;
 
 import java.util.List;
-@Dao
-public interface TermDAO {
 
-//TERMS CRUD
+@Dao
+public interface CourseDAO {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    void insert(Term term);
+    void insert(Course course);
 
     @Update
-    void update(Term term);
+    void update(Course course);
 
     @Delete
-    void delete(Term term);
+    void delete(Course course);
 
-    @Query("Select * FROM TERM_TABLE ORDER BY TERMID ASC")
-    List<Term> getAllTerms();
-
-
-
-//Courses CRUD
-
-
-
-
-
+    @Query("Select * FROM COURSE_TABLE ORDER BY CourseID ASC")
+    List<Course> getAllCourses();
 }

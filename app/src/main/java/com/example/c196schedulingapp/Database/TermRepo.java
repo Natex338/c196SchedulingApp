@@ -3,22 +3,20 @@ package com.example.c196schedulingapp.Database;
 import android.app.Application;
 
 import com.example.c196schedulingapp.DAO.TermDAO;
-import com.example.c196schedulingapp.Entity.Course;
 import com.example.c196schedulingapp.Entity.Term;
 
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class Repository {
+public class TermRepo {
     private TermDAO mTermDAO;
     private List<Term> mAllTerms;
-    private List<Course> mAllCourses;
     private static int NUMBER_OF_THREADS=4;
     static final ExecutorService databaseExecutor= Executors.newFixedThreadPool(NUMBER_OF_THREADS);
 
-    public Repository(Application application){
-        TermDatabaseBuilder db=TermDatabaseBuilder.getDatabase(application);
+    public TermRepo(Application application){
+        AppDatabaseBuilder db= AppDatabaseBuilder.getDatabase(application);
         mTermDAO=db.termDAO();
     }
 
@@ -31,7 +29,6 @@ public class Repository {
         }
         return mAllTerms;
     }
-
     public void insert(Term term){
         databaseExecutor.execute(()-> mTermDAO.insert(term));
         try {
@@ -50,23 +47,5 @@ public class Repository {
         }
 
     }
-    public List<Course> getAllCourses(){
-        databaseExecutor.execute(()-> mAllCourses=mTermDAO.getAllCourses());
-        try {
-            Thread.sleep(100);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        return mAllCourses;
-    }
 
-    public void insert(Course course){
-        databaseExecutor.execute(()-> mTermDAO.insert(course));
-        try {
-            Thread.sleep(100);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-    }
 }

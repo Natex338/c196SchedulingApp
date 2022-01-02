@@ -6,21 +6,25 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
+import com.example.c196schedulingapp.DAO.CourseDAO;
 import com.example.c196schedulingapp.DAO.TermDAO;
 import com.example.c196schedulingapp.Entity.Course;
 import com.example.c196schedulingapp.Entity.Term;
 
-@Database(entities = {Term.class, Course.class}, version = 2, exportSchema = false)
-public abstract class TermDatabaseBuilder extends RoomDatabase {
+@Database(entities = {Term.class, Course.class}, version = 3, exportSchema = false)
+public abstract class AppDatabaseBuilder extends RoomDatabase {
     public abstract TermDAO termDAO();
+    public abstract CourseDAO courseDAO();
 
-    private static volatile TermDatabaseBuilder INSTANCE;
+    private static volatile AppDatabaseBuilder INSTANCE;
 
-    static TermDatabaseBuilder getDatabase(final Context context){
+
+
+    static AppDatabaseBuilder getDatabase(final Context context){
         if (INSTANCE==null){
-            synchronized (TermDatabaseBuilder.class){
+            synchronized (AppDatabaseBuilder.class){
                 if (INSTANCE==null){
-                    INSTANCE= Room.databaseBuilder(context.getApplicationContext(),TermDatabaseBuilder.class,"MyTermDatabase.db")
+                    INSTANCE= Room.databaseBuilder(context.getApplicationContext(), AppDatabaseBuilder.class,"MyTermDatabase.db")
                             .fallbackToDestructiveMigration()
                             .build();
                 }

@@ -4,7 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
-import com.example.c196schedulingapp.Database.Repository;
+import com.example.c196schedulingapp.Database.CourseRepo;
+import com.example.c196schedulingapp.Database.TermRepo;
 import com.example.c196schedulingapp.Entity.Course;
 import com.example.c196schedulingapp.Entity.Term;
 
@@ -15,16 +16,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Repository repository= new Repository(getApplication());
+        TermRepo termRepo = new TermRepo(getApplication());
+        CourseRepo courseRepo= new CourseRepo(getApplication());
         Term term = new Term(1,"Term1");
-        repository.insert(term);
+        termRepo.insert(term);
         Term term2 = new Term(2,"Term2");
-        repository.insert(term2);
-        Course course = new Course(1,"Course1",term.getTermID());
-        repository.insert(course);
-        Course course2 = new Course(2,"Course2",term.getTermID());
-        repository.insert(course2);
-        Course course3 = new Course(3,"Course3",term.getTermID());
-        repository.insert(course3);
+        termRepo.insert(term2);
+        Course course = new Course(1,"Test Course",term.getTermID(),"Active",3);
+        courseRepo.insert(course);
     }
 }
