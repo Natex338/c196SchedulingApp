@@ -22,26 +22,31 @@ public class Course {
    // private Date startDate;
    // private Date endDate;
     private String status;
-    private int instructorID;
+    private String instructorName;
+    private String instructorPhone;
+    private String instructorEmail;
 
-    public Course(int courseID, String courseTitle, int termID, String status, int instructorID) {
+    public Course(int courseID, String courseTitle, int termID, String status, String instructorName, String instructorPhone, String instructorEmail) {
         this.termID = termID;
         this.courseID = courseID;
         this.courseTitle = courseTitle;
        // this.startDate = startDate;
         //this.endDate = endDate;
         this.status = status;
-        this.instructorID=instructorID;
+        this.instructorName=instructorName;
+        this.instructorPhone=instructorPhone;
+        this.instructorEmail=instructorEmail;
 
     }
 
-    //Getters
     public int getTermID() {
         return termID;
     }
+
     public int getCourseID() {
         return courseID;
     }
+
     public String getCourseTitle() {
         return courseTitle;
     }
@@ -56,17 +61,15 @@ public class Course {
     public String getStatus() {
         return status;
     }
-    public int getInstructorID() {
-        return instructorID;
-    }
 
-    //setters
     public void setTermID(int termID) {
         this.termID = termID;
     }
+
     public void setCourseID(int courseID) {
         this.courseID = courseID;
     }
+
     public void setCourseTitle(String courseTitle) {
         this.courseTitle = courseTitle;
     }
@@ -81,10 +84,30 @@ public class Course {
     public void setStatus(String status) {
         this.status = status;
     }
-    public void setInstructorID(int instructorID) {
-        this.instructorID = instructorID;
+
+    public String getInstructorName() {
+        return instructorName;
     }
 
+    public void setInstructorName(String instructorName) {
+        this.instructorName = instructorName;
+    }
+
+    public String getInstructorPhone() {
+        return instructorPhone;
+    }
+
+    public void setInstructorPhone(String instructorPhone) {
+        this.instructorPhone = instructorPhone;
+    }
+
+    public String getInstructorEmail() {
+        return instructorEmail;
+    }
+
+    public void setInstructorEmail(String instructorEmail) {
+        this.instructorEmail = instructorEmail;
+    }
 
     //override to string method
     @Override
