@@ -1,14 +1,23 @@
 package com.example.c196schedulingapp.UI;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
 
 import com.example.c196schedulingapp.Database.CourseRepo;
 import com.example.c196schedulingapp.Database.TermRepo;
 import com.example.c196schedulingapp.Entity.Course;
 import com.example.c196schedulingapp.Entity.Term;
 import com.example.c196schedulingapp.R;
+
+import java.util.List;
+import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -20,21 +29,39 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        TermRepo termRepo = new TermRepo(getApplication());
-        CourseRepo courseRepo= new CourseRepo(getApplication());
+        termRepo = new TermRepo(getApplication());
+        courseRepo = new CourseRepo(getApplication());
 
-
-
-        Term term = new Term(1,"Term1");
+        Term term = new Term(1, "Term1");
         termRepo.insert(term);
-        Term term2 = new Term(2,"Term2");
+        Term term2 = new Term(2, "Term2");
         termRepo.insert(term2);
-        Course course = new Course(1,"Test Course",term.getTermID(),"Active","Nathan","888888888","Email");
+        Course course = new Course(1, "Test Course", term.getTermID(), "Active", "Nathan", "888888888", "Email");
         courseRepo.insert(course);
+
+        List<Term> allTerms=termRepo.getAllTerms();
+        RecyclerView recyclerView=findViewById(R.id.recyclerView);
+        final ListViewAdapter termAdapter = new ListViewAdapter(this);
+        recyclerView.setAdapter(termAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        termAdapter.setTerms(allTerms);
+
 
     }
 
+    public void floatingActionButton(View view) {
+        Intent intent = new Intent(MainActivity.this, CreateTerm.class);
+        startActivity(intent);
+    }
 
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                this.finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
 
 }
