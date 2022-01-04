@@ -11,7 +11,7 @@ import com.example.c196schedulingapp.DAO.TermDAO;
 import com.example.c196schedulingapp.Entity.Course;
 import com.example.c196schedulingapp.Entity.Term;
 
-@Database(entities = {Term.class, Course.class}, version = 1, exportSchema = false)
+@Database(entities = {Term.class, Course.class}, version = 2, exportSchema = false)
 public abstract class AppDatabaseBuilder extends RoomDatabase {
     public abstract TermDAO termDAO();
     public abstract CourseDAO courseDAO();

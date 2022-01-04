@@ -9,10 +9,12 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.room.TypeConverter;
 
 import com.example.c196schedulingapp.Entity.Term;
 import com.example.c196schedulingapp.R;
 
+import java.util.Date;
 import java.util.List;
 
 public class ListViewAdapter extends RecyclerView.Adapter<ListViewAdapter.ListViewHolder> {
@@ -77,6 +79,8 @@ public class ListViewAdapter extends RecyclerView.Adapter<ListViewAdapter.ListVi
         mTerms=terms;
         notifyDataSetChanged();
     }
+
+
 
     @Override
     public int getItemCount() {

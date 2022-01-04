@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.example.c196schedulingapp.Database.CourseRepo;
+import com.example.c196schedulingapp.Database.DateConverter;
 import com.example.c196schedulingapp.Database.TermRepo;
 import com.example.c196schedulingapp.Entity.Course;
 import com.example.c196schedulingapp.Entity.Term;
@@ -66,11 +67,16 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    public boolean onCreateOptionsMenu(Menu menu){
+        getMenuInflater().inflate(R.menu.menu_recyclerview,menu);
+        return true;
+    }
+
 
     public void setSampleDatabase(){
-        Term term = new Term(1, "Term1");
+        Term term = new Term(1, "Term1", DateConverter.Converters.dateToTimestamp(java.util.Calendar.getInstance().getTime()));
         termRepo.insert(term);
-        Term term2 = new Term(2, "Term2");
+        Term term2 = new Term(2, "Term2",DateConverter.Converters.dateToTimestamp(java.util.Calendar.getInstance().getTime()));
         termRepo.insert(term2);
         Course course = new Course(1, "Test Course", term.getTermID(), "Active", "Nathan", "888888888", "Email");
         courseRepo.insert(course);

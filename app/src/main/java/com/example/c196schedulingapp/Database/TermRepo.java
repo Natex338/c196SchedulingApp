@@ -47,5 +47,14 @@ public class TermRepo {
         }
 
     }
+    public void delete(Term term){
+        databaseExecutor.execute(()-> mTermDAO.delete(term));
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+    }
 
 }
