@@ -58,7 +58,6 @@ public class ListViewAdapter extends RecyclerView.Adapter<ListViewAdapter.ListVi
         if(mTerms!=null){
             Term current=mTerms.get(position);
             int id=current.getTermID();
-
             holder.listItemView.setText((current.getTermName()));
             holder.listItemView1.setText(Integer.toString(current.getTermID()));
         }

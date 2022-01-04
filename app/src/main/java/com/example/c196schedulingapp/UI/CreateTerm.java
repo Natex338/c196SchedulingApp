@@ -59,5 +59,9 @@ public class CreateTerm extends AppCompatActivity {
         Intent intent = new Intent (CreateTerm.this, MainActivity.class );
         startActivity(intent);
     }
+
+    public void date(View view) {
+
+    }
 }
 

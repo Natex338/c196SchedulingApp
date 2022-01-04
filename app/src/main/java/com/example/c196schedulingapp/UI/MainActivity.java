@@ -32,15 +32,11 @@ public class MainActivity extends AppCompatActivity {
         termRepo = new TermRepo(getApplication());
         courseRepo = new CourseRepo(getApplication());
 
-        Term term = new Term(1, "Term1");
-        termRepo.insert(term);
-        Term term2 = new Term(2, "Term2");
-        termRepo.insert(term2);
-        Course course = new Course(1, "Test Course", term.getTermID(), "Active", "Nathan", "888888888", "Email");
-        courseRepo.insert(course);
+        setSampleDatabase();
 
         List<Term> allTerms=termRepo.getAllTerms();
         RecyclerView recyclerView=findViewById(R.id.recyclerView);
+
         final ListViewAdapter termAdapter = new ListViewAdapter(this);
         recyclerView.setAdapter(termAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -59,9 +55,25 @@ public class MainActivity extends AppCompatActivity {
             case android.R.id.home:
                 this.finish();
                 return true;
+            case R.id.refresh:
+                List<Term> allTerms=termRepo.getAllTerms();
+                RecyclerView recyclerView=findViewById(R.id.recyclerView);
+                final ListViewAdapter termAdapter = new ListViewAdapter(this);
+                termAdapter.setTerms(allTerms);
+                recyclerView.setLayoutManager(new LinearLayoutManager(this));
+                termAdapter.setTerms(allTerms);
         }
         return super.onOptionsItemSelected(item);
     }
 
+
+    public void setSampleDatabase(){
+        Term term = new Term(1, "Term1");
+        termRepo.insert(term);
+        Term term2 = new Term(2, "Term2");
+        termRepo.insert(term2);
+        Course course = new Course(1, "Test Course", term.getTermID(), "Active", "Nathan", "888888888", "Email");
+        courseRepo.insert(course);
+    }
 
 }

@@ -83,6 +83,17 @@
                     android:onClick="saveTerm"
                     android:text="Save" />
             </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="date"
+                    android:text="Date" />
+            </LinearLayout>
         </LinearLayout>
     </ScrollView>
 
