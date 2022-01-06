@@ -44,8 +44,8 @@ public class CreateTerm extends AppCompatActivity {
         editName=findViewById(R.id.termName);
         editName.setText(name);
 
-        startDate = getIntent().getStringExtra("startDate");
-        editDate = findViewById(R.id.termStartDate);
+        startDate = getIntent().getStringExtra("termStart");
+        editDate = findViewById(R.id.termStart);
         editDate.setText(startDate);
 
         repository= new TermRepo(getApplication());
