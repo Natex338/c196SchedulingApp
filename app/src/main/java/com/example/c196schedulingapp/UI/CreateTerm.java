@@ -44,7 +44,7 @@ public class CreateTerm extends AppCompatActivity {
         editName=findViewById(R.id.termName);
         editName.setText(name);
 
-        startDate = getIntent().getStringExtra("termStartDate");
+        startDate = getIntent().getStringExtra("startDate");
         editDate = findViewById(R.id.termStartDate);
         editDate.setText(startDate);
 
@@ -68,10 +68,10 @@ public class CreateTerm extends AppCompatActivity {
                 startActivity(shareIntent);
                 return true;
             case R.id.notify:
-                String dateFromString = getIntent().getStringExtra("termStartDate");
+                String dateFromString = editDate.getText().toString();
                 long trigger = dateParse(dateFromString).getTime();
                 Intent intent  = new Intent(CreateTerm.this,MyReceiver.class);
-                intent.putExtra("key","Message I want to see");
+                intent.putExtra("key","?");
                 PendingIntent sender= PendingIntent.getBroadcast(CreateTerm.this, ++numAlert, intent, 0);
                 AlarmManager alarmManager=(AlarmManager) getSystemService(Context.ALARM_SERVICE);
                 alarmManager.set(AlarmManager.RTC_WAKEUP, trigger, sender);

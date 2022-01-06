@@ -14,7 +14,7 @@ import androidx.core.app.NotificationManagerCompat;
 import com.example.c196schedulingapp.R;
 
 public class MyReceiver extends BroadcastReceiver {
-    String channel_id;
+    String channel_id="Test";
     static int  notificationID;
 
     @Override
