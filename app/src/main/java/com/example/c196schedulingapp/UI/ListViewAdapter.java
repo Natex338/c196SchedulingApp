@@ -38,6 +38,7 @@ public class ListViewAdapter extends RecyclerView.Adapter<ListViewAdapter.ListVi
                     Intent intent = new Intent(context, CreateTerm.class);
                     intent.putExtra("termStart", current.getStartDate().toString());
                     intent.putExtra("termName", current.getTermName());
+                    intent.putExtra("termID", current.getTermID());
                     context.startActivity(intent);
 
                 }
