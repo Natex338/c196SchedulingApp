@@ -74,9 +74,9 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void setSampleDatabase(){
-        Term term = new Term(1, "Term1", DateConverter.Converters.dateToTimestamp(java.util.Calendar.getInstance().getTime()));
+        Term term = new Term(1, "Term1", java.util.Calendar.getInstance().getTime());
         termRepo.insert(term);
-        Term term2 = new Term(2, "Term2",DateConverter.Converters.dateToTimestamp(java.util.Calendar.getInstance().getTime()));
+        Term term2 = new Term(2, "Term2",java.util.Calendar.getInstance().getTime());
         termRepo.insert(term2);
         Course course = new Course(1, "Test Course", term.getTermID(), "Active", "Nathan", "888888888", "Email");
         courseRepo.insert(course);

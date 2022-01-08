@@ -6,7 +6,6 @@ import java.util.Date;
 
 public class DateConverter {
 
-    public static class Converters {
         @TypeConverter
         public static Date fromTimestamp(Long value) {
             return value == null ? null : new Date(value);
@@ -15,5 +14,5 @@ public class DateConverter {
         public static Long dateToTimestamp(Date date) {
             return date == null ? null : date.getTime();
         }
-    }
+
 }

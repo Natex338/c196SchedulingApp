@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.AlarmManagerCompat;
 
 import android.app.AlarmManager;
+import android.app.DatePickerDialog;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
@@ -11,6 +12,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.DatePicker;
 import android.widget.EditText;
 
 import com.example.c196schedulingapp.Database.DateConverter;
@@ -20,6 +22,7 @@ import com.example.c196schedulingapp.R;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Objects;
@@ -27,11 +30,13 @@ import java.util.Objects;
 public class CreateTerm extends AppCompatActivity {
     public int numAlert;
     String name;
-    String startDate;
+    String date;
     EditText editName;
     EditText editDate;
     int id;
     TermRepo repository;
+    DatePickerDialog.OnDateSetListener date1;
+    final Calendar myCalendar = Calendar.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,14 +49,33 @@ public class CreateTerm extends AppCompatActivity {
         editName=findViewById(R.id.termName);
         editName.setText(name);
 
-        startDate = getIntent().getStringExtra("termStart");
+        date = getIntent().getStringExtra("termStart");
         editDate = findViewById(R.id.termStart);
-        editDate.setText(startDate);
+        editDate.setText(date);
 
         repository= new TermRepo(getApplication());
 
-    }
+        date1 = new DatePickerDialog.OnDateSetListener() {
 
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear,int dayOfMonth) {
+                myCalendar.set(Calendar.YEAR, year);
+                myCalendar.set(Calendar.MONTH, monthOfYear);
+                myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                updateLabel();
+            }
+        };
+
+        editDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                new DatePickerDialog(CreateTerm.this, date1, myCalendar
+                        .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
+                        myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+            }
+        });
+    }
 
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -85,14 +109,13 @@ public class CreateTerm extends AppCompatActivity {
     Date screenDate= dateParse(editDate.getText().toString());
         if (name==null) {
             id=repository.getAllTerms().get(repository.getAllTerms().size()-1).getTermID();
-            Term newTerm = new Term(++id, screenName, DateConverter.Converters.dateToTimestamp(screenDate));
+            Term newTerm = new Term(++id, screenName, screenDate);
             repository.insert(newTerm);
         }
         else {
-            Term oldTerm=new Term(getIntent().getIntExtra("termID", -1),screenName,DateConverter.Converters.dateToTimestamp(screenDate));
+            Term oldTerm=new Term(getIntent().getIntExtra("termID", -1),screenName,screenDate);
             repository.update(oldTerm);
         }
-
         Intent intent = new Intent (CreateTerm.this, MainActivity.class );
         startActivity(intent);
     }
@@ -116,8 +139,12 @@ public class CreateTerm extends AppCompatActivity {
         return myDate;
     }
 
-    public void date(View view) {
-
+    public void date(View view) { }
+    private void updateLabel() {
+        String myFormat = "MM/dd/yy"; //In which you need put here
+        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+        editDate.setText(sdf.format(myCalendar.getTime()));
     }
 }
+
 

@@ -36,7 +36,7 @@ public class ListViewAdapter extends RecyclerView.Adapter<ListViewAdapter.ListVi
                     int position = getAdapterPosition();
                     final Term current = mTerms.get(position);
                     Intent intent = new Intent(context, CreateTerm.class);
-                    intent.putExtra("termStart", current.getStartDate());
+                    intent.putExtra("termStart", current.getStartDate().toString());
                     intent.putExtra("termName", current.getTermName());
                     context.startActivity(intent);
 
@@ -62,7 +62,7 @@ public class ListViewAdapter extends RecyclerView.Adapter<ListViewAdapter.ListVi
             Term current=mTerms.get(position);
             int id=current.getTermID();
             holder.listItemView.setText((current.getTermName()));
-            holder.listItemView1.setText(Integer.toString((int) current.getStartDate()));
+            holder.listItemView1.setText(current.getStartDate().toString());
         }
         else{
             holder.listItemView.setText("No Thing Name");

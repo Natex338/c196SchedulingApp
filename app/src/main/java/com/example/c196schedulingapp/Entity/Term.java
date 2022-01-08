@@ -12,9 +12,9 @@ import java.util.Date;
         @PrimaryKey(autoGenerate = true)
         private int termID;
         private String termName;
-        private long startDate;
+        private Date startDate;
 
-        public Term(int termID, String termName, long startDate) {
+        public Term(int termID, String termName, Date startDate) {
             this.termID = termID;
             this.termName = termName;
             this.startDate= startDate;
@@ -44,13 +44,13 @@ import java.util.Date;
             return termName;
         }
 
-    public long getStartDate() {
+    public Date getStartDate() {
 
             return startDate;
     }
 
     public void setStartDate(Date startDate) {
-        this.startDate = DateConverter.Converters.dateToTimestamp(startDate);
+        this.startDate =startDate;
     }
 }
 
