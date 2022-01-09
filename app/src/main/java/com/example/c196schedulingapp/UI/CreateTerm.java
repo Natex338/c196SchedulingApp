@@ -148,6 +148,11 @@ public class CreateTerm extends AppCompatActivity {
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
         editDate.setText(sdf.format(myCalendar.getTime()));
     }
+
+    public void addCourse(View view) {
+        Intent intent = new Intent(CreateTerm.this, CreateCourse.class);
+        startActivity(intent);
+    }
 }
 
 

@@ -11,14 +11,12 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.example.c196schedulingapp.Database.CourseRepo;
-import com.example.c196schedulingapp.Database.DateConverter;
 import com.example.c196schedulingapp.Database.TermRepo;
 import com.example.c196schedulingapp.Entity.Course;
 import com.example.c196schedulingapp.Entity.Term;
 import com.example.c196schedulingapp.R;
 
 import java.util.List;
-import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -38,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
         List<Term> allTerms=termRepo.getAllTerms();
         RecyclerView recyclerView=findViewById(R.id.recyclerView);
 
-        final ListViewAdapter termAdapter = new ListViewAdapter(this);
+        final TermViewAdapter termAdapter = new TermViewAdapter(this);
         recyclerView.setAdapter(termAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         termAdapter.setTerms(allTerms);
@@ -59,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
             case R.id.refresh:
                 List<Term> allTerms=termRepo.getAllTerms();
                 RecyclerView recyclerView=findViewById(R.id.recyclerView);
-                final ListViewAdapter termAdapter = new ListViewAdapter(this);
+                final TermViewAdapter termAdapter = new TermViewAdapter(this);
                 termAdapter.setTerms(allTerms);
                 recyclerView.setLayoutManager(new LinearLayoutManager(this));
                 termAdapter.setTerms(allTerms);

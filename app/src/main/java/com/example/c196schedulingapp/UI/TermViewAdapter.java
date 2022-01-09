@@ -9,25 +9,22 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.room.TypeConverter;
 
-import com.example.c196schedulingapp.Database.DateConverter;
 import com.example.c196schedulingapp.Entity.Term;
 import com.example.c196schedulingapp.R;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-public class ListViewAdapter extends RecyclerView.Adapter<ListViewAdapter.ListViewHolder> {
+public class TermViewAdapter extends RecyclerView.Adapter<TermViewAdapter.TermViewHolder> {
 
-    class ListViewHolder extends RecyclerView.ViewHolder {
+    class TermViewHolder extends RecyclerView.ViewHolder {
 
         private final TextView listItemView;
         private final TextView listItemView1;
 
-        private ListViewHolder(View itemView) {
+        private TermViewHolder(View itemView) {
             super(itemView);
             listItemView = itemView.findViewById(R.id.textView);
             listItemView1 = itemView.findViewById(R.id.textView1);
@@ -54,13 +51,13 @@ public class ListViewAdapter extends RecyclerView.Adapter<ListViewAdapter.ListVi
 
     @NonNull
     @Override
-    public ListViewAdapter.ListViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public TermViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView=mInflator.inflate(R.layout.list_items, parent, false);
-        return new ListViewHolder(itemView);
+        return new TermViewHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ListViewAdapter.ListViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull TermViewHolder holder, int position) {
         if(mTerms!=null){
 
             Term current=mTerms.get(position);
@@ -74,7 +71,7 @@ public class ListViewAdapter extends RecyclerView.Adapter<ListViewAdapter.ListVi
         }
     }
 
-    public ListViewAdapter(Context context){
+    public TermViewAdapter(Context context){
         mInflator=LayoutInflater.from(context);
         this.context=context;
     }
