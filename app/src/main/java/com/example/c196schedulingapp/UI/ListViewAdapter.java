@@ -15,8 +15,10 @@ import com.example.c196schedulingapp.Database.DateConverter;
 import com.example.c196schedulingapp.Entity.Term;
 import com.example.c196schedulingapp.R;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class ListViewAdapter extends RecyclerView.Adapter<ListViewAdapter.ListViewHolder> {
 
@@ -60,6 +62,7 @@ public class ListViewAdapter extends RecyclerView.Adapter<ListViewAdapter.ListVi
     @Override
     public void onBindViewHolder(@NonNull ListViewAdapter.ListViewHolder holder, int position) {
         if(mTerms!=null){
+
             Term current=mTerms.get(position);
             int id=current.getTermID();
             holder.listItemView.setText((current.getTermName()));
@@ -82,10 +85,18 @@ public class ListViewAdapter extends RecyclerView.Adapter<ListViewAdapter.ListVi
         notifyDataSetChanged();
     }
 
+    public String dateFormat(String date){
+        String myFormat = "MM/dd/yy"; //In which you need put here
+        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+       return sdf.format(date);
+    }
+
 
 
     @Override
     public int getItemCount() {
-        return mTerms.size();
+        if (mTerms != null)
+            return mTerms.size();
+        else return 0;
     }
 }

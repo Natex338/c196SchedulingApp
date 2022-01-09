@@ -107,6 +107,7 @@ public class CreateTerm extends AppCompatActivity {
     public void saveTerm(View view) {
     String screenName= editName.getText().toString();
     Date screenDate= dateParse(editDate.getText().toString());
+
         if (name==null) {
             id=repository.getAllTerms().get(repository.getAllTerms().size()-1).getTermID();
             Term newTerm = new Term(++id, screenName, screenDate);
@@ -139,7 +140,9 @@ public class CreateTerm extends AppCompatActivity {
         return myDate;
     }
 
-    public void date(View view) { }
+    public void onCancel(View view) {
+        this.finish();
+    }
     private void updateLabel() {
         String myFormat = "MM/dd/yy"; //In which you need put here
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
