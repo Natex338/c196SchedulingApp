@@ -16,22 +16,22 @@ import java.util.EnumMap;
 
 public class Course {
     @PrimaryKey(autoGenerate = true)
-    private int termID;
     private int courseID;
+    private int termID;
     private String courseTitle;
-   // private Date startDate;
-   // private Date endDate;
+    private Date startDate;
+    private Date endDate;
     private String status;
     private String instructorName;
     private String instructorPhone;
     private String instructorEmail;
 
-    public Course(int courseID, String courseTitle, int termID, String status, String instructorName, String instructorPhone, String instructorEmail) {
+    public Course(int courseID, String courseTitle, int termID, String status, String instructorName, String instructorPhone, String instructorEmail, Date startDate, Date endDate) {
         this.termID = termID;
         this.courseID = courseID;
         this.courseTitle = courseTitle;
-       // this.startDate = startDate;
-        //this.endDate = endDate;
+        this.startDate = startDate;
+        this.endDate = endDate;
         this.status = status;
         this.instructorName=instructorName;
         this.instructorPhone=instructorPhone;
@@ -73,14 +73,14 @@ public class Course {
     public void setCourseTitle(String courseTitle) {
         this.courseTitle = courseTitle;
     }
-/*    public void setStartDate(Date startDate) {
+
+    public void setStartDate(Date startDate) {
         this.startDate = startDate;
     }
     public void setEndDate(Date endDate) {
         this.endDate = endDate;
     }
 
- */
     public void setStatus(String status) {
         this.status = status;
     }
@@ -119,4 +119,11 @@ public class Course {
     }
 
 
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
 }

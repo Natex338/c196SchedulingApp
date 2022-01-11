@@ -12,8 +12,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.c196schedulingapp.Entity.Term;
 import com.example.c196schedulingapp.R;
+import com.example.c196schedulingapp.Util.DateParse;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -35,7 +38,8 @@ public class TermViewAdapter extends RecyclerView.Adapter<TermViewAdapter.TermVi
                     int position = getAdapterPosition();
                     final Term current = mTerms.get(position);
                     Intent intent = new Intent(context, CreateTerm.class);
-                    intent.putExtra("termStart", current.getStartDate().toString());
+                    intent.putExtra("termStart", DateParse.dateParseString(current.getStartDate()));
+                    intent.putExtra("termEnd", DateParse.dateParseString(current.getEndDate()));
                     intent.putExtra("termName", current.getTermName());
                     intent.putExtra("termID", current.getTermID());
                     context.startActivity(intent);
@@ -63,7 +67,7 @@ public class TermViewAdapter extends RecyclerView.Adapter<TermViewAdapter.TermVi
             Term current=mTerms.get(position);
             int id=current.getTermID();
             holder.listItemView.setText((current.getTermName()));
-            holder.listItemView1.setText(current.getStartDate().toString());
+            holder.listItemView1.setText(DateParse.dateParseString(current.getStartDate()));
         }
         else{
             holder.listItemView.setText("No Thing Name");
@@ -71,7 +75,7 @@ public class TermViewAdapter extends RecyclerView.Adapter<TermViewAdapter.TermVi
         }
     }
 
-    public TermViewAdapter(Context context){
+   public TermViewAdapter(Context context){
         mInflator=LayoutInflater.from(context);
         this.context=context;
     }
@@ -82,13 +86,11 @@ public class TermViewAdapter extends RecyclerView.Adapter<TermViewAdapter.TermVi
         notifyDataSetChanged();
     }
 
-    public String dateFormat(String date){
+    public String dateFormat(String date) throws ParseException {
         String myFormat = "MM/dd/yy"; //In which you need put here
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
        return sdf.format(date);
     }
-
-
 
     @Override
     public int getItemCount() {

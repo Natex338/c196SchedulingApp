@@ -16,12 +16,14 @@ import com.example.c196schedulingapp.Entity.Course;
 import com.example.c196schedulingapp.Entity.Term;
 import com.example.c196schedulingapp.R;
 
+import java.util.Date;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
     private TermRepo termRepo;
     private CourseRepo courseRepo;
+    int testCount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +33,10 @@ public class MainActivity extends AppCompatActivity {
         termRepo = new TermRepo(getApplication());
         courseRepo = new CourseRepo(getApplication());
 
-        setSampleDatabase();
+        if (testCount<1) {
+
+            setSampleDatabase();
+        }
 
         List<Term> allTerms=termRepo.getAllTerms();
         RecyclerView recyclerView=findViewById(R.id.recyclerView);
@@ -72,11 +77,12 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void setSampleDatabase(){
-        Term term = new Term(1, "Term1", java.util.Calendar.getInstance().getTime());
+        ++testCount;
+        Term term = new Term(1, "Term1", java.util.Calendar.getInstance().getTime(),new  Date("11/01/2022"));
         termRepo.insert(term);
-        Term term2 = new Term(2, "Term2",java.util.Calendar.getInstance().getTime());
+        Term term2 = new Term(2, "Term2",java.util.Calendar.getInstance().getTime(),new  Date("11/01/2022"));
         termRepo.insert(term2);
-        Course course = new Course(1, "Test Course", term.getTermID(), "Active", "Nathan", "888888888", "Email");
+        Course course = new Course(0, "Test Course", term.getTermID(), "Active", "Nathan", "888888888", "Email",new  Date("11/01/2022"),new  Date("11/01/2022"));
         courseRepo.insert(course);
     }
 

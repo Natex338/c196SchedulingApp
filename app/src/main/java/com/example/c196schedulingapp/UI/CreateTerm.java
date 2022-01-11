@@ -1,7 +1,8 @@
 package com.example.c196schedulingapp.UI;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.AlarmManagerCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.AlarmManager;
 import android.app.DatePickerDialog;
@@ -15,28 +16,37 @@ import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
 
-import com.example.c196schedulingapp.Database.DateConverter;
+import com.example.c196schedulingapp.Database.CourseRepo;
 import com.example.c196schedulingapp.Database.TermRepo;
+import com.example.c196schedulingapp.Entity.Course;
 import com.example.c196schedulingapp.Entity.Term;
 import com.example.c196schedulingapp.R;
+import com.example.c196schedulingapp.Util.DateParse;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
 public class CreateTerm extends AppCompatActivity {
     public int numAlert;
     String name;
-    String date;
+    String startDate;
+    String endDate;
     EditText editName;
-    EditText editDate;
+    EditText editSDate;
+    EditText editEDate;
     int id;
     TermRepo repository;
     DatePickerDialog.OnDateSetListener date1;
+    DatePickerDialog.OnDateSetListener date2;
     final Calendar myCalendar = Calendar.getInstance();
+    CourseRepo courseRepo;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,15 +55,39 @@ public class CreateTerm extends AppCompatActivity {
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-        name= getIntent().getStringExtra("termName");
-        editName=findViewById(R.id.termName);
+        name = getIntent().getStringExtra("termName");
+        editName = findViewById(R.id.termName);
         editName.setText(name);
 
-        date = getIntent().getStringExtra("termStart");
-        editDate = findViewById(R.id.termStart);
-        editDate.setText(date);
+        startDate = getIntent().getStringExtra("termStart");
+        editSDate = findViewById(R.id.termStart);
+        editSDate.setText(startDate);
 
-        repository= new TermRepo(getApplication());
+        endDate = getIntent().getStringExtra("termEnd");
+        editEDate = findViewById(R.id.termEnd);
+        editEDate.setText(endDate);
+
+        id = getIntent().getIntExtra("termID", 0);
+
+        repository = new TermRepo(getApplication());
+        courseRepo = new CourseRepo(getApplication());
+
+
+        RecyclerView recyclerView = findViewById(R.id.recyclerCourseView);
+        List<Course> allCourses = new ArrayList<>();
+        for (Course course : courseRepo.getAllCourses()) {
+            if (course.getTermID() == id)
+                allCourses.add(course);
+        }
+
+        final CourseViewAdapter courseAdapter = new CourseViewAdapter(this);
+        recyclerView.setAdapter(courseAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        courseAdapter.setCourse(allCourses);
+
+
+
+
 
         date1 = new DatePickerDialog.OnDateSetListener() {
 
@@ -65,8 +99,18 @@ public class CreateTerm extends AppCompatActivity {
                 updateLabel();
             }
         };
+        date2 = new DatePickerDialog.OnDateSetListener() {
 
-        editDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear,int dayOfMonth) {
+                myCalendar.set(Calendar.YEAR, year);
+                myCalendar.set(Calendar.MONTH, monthOfYear);
+                myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                updateLabelEnd();
+            }
+        };
+
+        editSDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // TODO Auto-generated method stub
@@ -75,7 +119,20 @@ public class CreateTerm extends AppCompatActivity {
                         myCalendar.get(Calendar.DAY_OF_MONTH)).show();
             }
         });
+
+        editEDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                new DatePickerDialog(CreateTerm.this, date2, myCalendar
+                        .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
+                        myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+            }
+        });
+
+
     }
+
 
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -92,8 +149,8 @@ public class CreateTerm extends AppCompatActivity {
                 startActivity(shareIntent);
                 return true;
             case R.id.notify:
-                String dateFromString = editDate.getText().toString();
-                long trigger = dateParse(dateFromString).getTime();
+                String dateFromString = editSDate.getText().toString();
+                long trigger = DateParse.dateParse(dateFromString).getTime();
                 Intent intent  = new Intent(CreateTerm.this,MyReceiver.class);
                 intent.putExtra("key","?");
                 PendingIntent sender= PendingIntent.getBroadcast(CreateTerm.this, ++numAlert, intent, 0);
@@ -106,17 +163,19 @@ public class CreateTerm extends AppCompatActivity {
 
     public void saveTerm(View view) {
     String screenName= editName.getText().toString();
-    Date screenDate= dateParse(editDate.getText().toString());
+    Date screenDate= DateParse.dateParse(editSDate.getText().toString());
+    Date screenDate2= DateParse.dateParse(editEDate.getText().toString());
 
         if (name==null) {
             id=repository.getAllTerms().get(repository.getAllTerms().size()-1).getTermID();
-            Term newTerm = new Term(++id, screenName, screenDate);
+            Term newTerm = new Term(++id, screenName, screenDate,screenDate2);
             repository.insert(newTerm);
         }
         else {
-            Term oldTerm=new Term(getIntent().getIntExtra("termID", -1),screenName,screenDate);
+            Term oldTerm=new Term(getIntent().getIntExtra("termID", -1),screenName,screenDate,screenDate2 );
             repository.update(oldTerm);
         }
+
         Intent intent = new Intent (CreateTerm.this, MainActivity.class );
         startActivity(intent);
     }
@@ -126,31 +185,26 @@ public class CreateTerm extends AppCompatActivity {
         return true;
     }
 
-    public Date dateParse(String date){
-        String dateFromString =date;
-        String myFormat = "MM/dd/yy";
-        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
-        Date myDate = null;
-        try{
-            myDate= sdf.parse(dateFromString);
-        }
-        catch (ParseException e){
-            e.printStackTrace();
-        }
-        return myDate;
-    }
 
     public void onCancel(View view) {
         this.finish();
     }
+
     private void updateLabel() {
         String myFormat = "MM/dd/yy"; //In which you need put here
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
-        editDate.setText(sdf.format(myCalendar.getTime()));
+        editSDate.setText(sdf.format(myCalendar.getTime()));
+    }
+
+    private void updateLabelEnd() {
+        String myFormat = "MM/dd/yy"; //In which you need put here
+        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+        editEDate.setText(sdf.format(myCalendar.getTime()));
     }
 
     public void addCourse(View view) {
         Intent intent = new Intent(CreateTerm.this, CreateCourse.class);
+        intent.putExtra("key",id);
         startActivity(intent);
     }
 }

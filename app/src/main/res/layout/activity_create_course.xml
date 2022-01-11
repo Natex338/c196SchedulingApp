@@ -52,7 +52,7 @@
                     android:text="Course Name" />
 
                 <EditText
-                    android:id="@+id/termName"
+                    android:id="@+id/courseName"
                     android:layout_width="200dp"
                     android:layout_height="wrap_content" />
             </LinearLayout>
@@ -65,12 +65,14 @@
                 <TextView
                     android:layout_width="200dp"
                     android:layout_height="wrap_content"
-                    android:text="Course Start Date" />
+                    android:text="Course Start Date"
+                    android:focusable="false"/>
 
                 <EditText
-                    android:id="@+id/CourseStart"
+                    android:id="@+id/courseStart"
                     android:layout_width="200dp"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:focusable="false"/>
             </LinearLayout>
 
             <LinearLayout
@@ -81,10 +83,57 @@
                 <TextView
                     android:layout_width="200dp"
                     android:layout_height="wrap_content"
-                    android:text="Course End Date" />
+                    android:text="Course End Date"/>
 
                 <EditText
-                    android:id="@+id/CourseEnd"
+                    android:id="@+id/courseEnd"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:focusable="false"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:text="Instructor Name" />
+
+                <EditText
+                    android:id="@+id/instructorName"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:text="Instructor Phone" />
+
+                <EditText
+                    android:id="@+id/instructorPhone"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:text="instructor Email" />
+
+                <EditText
+                    android:id="@+id/instructorEmail"
                     android:layout_width="200dp"
                     android:layout_height="wrap_content" />
             </LinearLayout>

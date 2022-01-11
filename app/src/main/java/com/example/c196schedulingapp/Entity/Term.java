@@ -8,49 +8,59 @@ import com.example.c196schedulingapp.Database.DateConverter;
 import java.util.Date;
 
 @Entity(tableName = "term_table")
-    public class Term {
-        @PrimaryKey(autoGenerate = true)
-        private int termID;
-        private String termName;
-        private Date startDate;
+public class Term {
+    @PrimaryKey(autoGenerate = true)
+    private int termID;
+    private String termName;
+    private Date startDate;
+    private Date endDate;
 
-        public Term(int termID, String termName, Date startDate) {
-            this.termID = termID;
-            this.termName = termName;
-            this.startDate= startDate;
-        }
+    public Term(int termID, String termName, Date startDate, Date endDate) {
+        this.termID = termID;
+        this.termName = termName;
+        this.startDate = startDate;
+        this.endDate = endDate;
+    }
 
-        @Override
-        public String toString() {
-            return "Term{" +
-                    "termID=" + termID +
-                    ", termName='" + termName + '\'' +
-                    '}';
-        }
+    @Override
+    public String toString() {
+        return "Term{" +
+                "termID=" + termID +
+                ", termName='" + termName + '\'' +
+                '}';
+    }
 
-        public void setTerID(int termID) {
-            this.termID = termID;
-        }
+    public void setTermID(int termID) {
+        this.termID = termID;
+    }
 
-        public void setTermName(String termName) {
-            this.termName = termName;
-        }
+    public void setTermName(String termName) {
+        this.termName = termName;
+    }
 
-        public int getTermID() {
-            return termID;
-        }
+    public int getTermID() {
+        return termID;
+    }
 
-        public String getTermName() {
-            return termName;
-        }
+    public String getTermName() {
+        return termName;
+    }
 
     public Date getStartDate() {
 
-            return startDate;
+        return startDate;
     }
 
     public void setStartDate(Date startDate) {
-        this.startDate =startDate;
+        this.startDate = startDate;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
     }
 }
 
