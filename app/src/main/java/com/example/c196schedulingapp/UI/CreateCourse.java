@@ -132,6 +132,9 @@ public class CreateCourse extends AppCompatActivity {
 
 
     public void addCAssessment(View view) {
+        Intent intent = new Intent(CreateCourse.this, CreateAssessment.class);
+        intent.putExtra("key",courseID);
+        startActivity(intent);
 
     }
 

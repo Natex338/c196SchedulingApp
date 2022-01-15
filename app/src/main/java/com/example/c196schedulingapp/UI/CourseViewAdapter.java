@@ -27,11 +27,13 @@ public class CourseViewAdapter extends RecyclerView.Adapter<CourseViewAdapter.Co
 
     private final TextView listItemView;
     private final TextView listItemView1;
+    private final TextView listItemView2;
 
     private CourseViewHolder(View itemView) {
         super(itemView);
         listItemView = itemView.findViewById(R.id.textView);
         listItemView1 = itemView.findViewById(R.id.textView1);
+        listItemView2 = itemView.findViewById(R.id.textView2);
         itemView.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -65,10 +67,12 @@ public class CourseViewAdapter extends RecyclerView.Adapter<CourseViewAdapter.Co
             Course current=mCourses.get(position);
             holder.listItemView.setText((current.getCourseTitle()));
             holder.listItemView1.setText(DateParse.dateParseString(current.getStartDate()));
+            holder.listItemView2.setText(DateParse.dateParseString(current.getEndDate()));
         }
         else{
             holder.listItemView.setText("No Thing Name");
             holder.listItemView1.setText("No Thing ID");
+            holder.listItemView2.setText("No Thing ID");
         }
     }
 

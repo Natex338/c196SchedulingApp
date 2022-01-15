@@ -10,11 +10,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.example.c196schedulingapp.Database.AssessmentRepo;
 import com.example.c196schedulingapp.Database.CourseRepo;
 import com.example.c196schedulingapp.Database.TermRepo;
+import com.example.c196schedulingapp.Entity.Assessment;
 import com.example.c196schedulingapp.Entity.Course;
 import com.example.c196schedulingapp.Entity.Term;
 import com.example.c196schedulingapp.R;
+import com.example.c196schedulingapp.Util.ASSESSMENT_TYPE;
 
 import java.util.Date;
 import java.util.List;
@@ -23,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
 
     private TermRepo termRepo;
     private CourseRepo courseRepo;
+    private AssessmentRepo assessmentRepo;
     int testCount;
 
     @Override
@@ -32,11 +36,9 @@ public class MainActivity extends AppCompatActivity {
 
         termRepo = new TermRepo(getApplication());
         courseRepo = new CourseRepo(getApplication());
+        assessmentRepo = new AssessmentRepo(getApplication());
 
-        if (testCount<1) {
-
-            setSampleDatabase();
-        }
+        setSampleDatabase();
 
         List<Term> allTerms=termRepo.getAllTerms();
         RecyclerView recyclerView=findViewById(R.id.recyclerView);
@@ -82,8 +84,11 @@ public class MainActivity extends AppCompatActivity {
         termRepo.insert(term);
         Term term2 = new Term(2, "Term2",java.util.Calendar.getInstance().getTime(),new  Date("11/01/2022"));
         termRepo.insert(term2);
-        Course course = new Course(0, "Test Course", term.getTermID(), "Active", "Nathan", "888888888", "Email",new  Date("11/01/2022"),new  Date("11/01/2022"));
+        Course course = new Course(1, "Test Course", term.getTermID(), "Active", "Nathan", "888888888", "Email",new  Date("11/01/2022"),new  Date("11/01/2022"));
         courseRepo.insert(course);
+
+        Assessment assessment= new Assessment(1,course.getCourseID(),"Test Assessment",new  Date("11/01/2022"),new  Date("11/01/2022"));
+        assessmentRepo.insert(assessment);
     }
 
 }
