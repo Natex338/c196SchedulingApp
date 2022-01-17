@@ -4,10 +4,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.AlarmManager;
 import android.app.DatePickerDialog;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -45,6 +49,7 @@ public class CreateCourse extends AppCompatActivity {
     EditText editInstructorPhone;
     int courseID;
     int termID;
+    int numAlert;
     CourseRepo courseRepo;
     AssessmentRepo assessmentRepo;
 
@@ -153,10 +158,68 @@ public class CreateCourse extends AppCompatActivity {
 
     }
 
+    public boolean onCreateOptionsMenu(Menu menu){
+        getMenuInflater().inflate(R.menu.menu,menu);
+        return true;
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                this.finish();
+                return true;
+            case R.id.share:
+                // TODO fix to send correct data
+                Intent sendIntent = new Intent();
+                sendIntent.setAction(Intent.ACTION_SEND);
+                sendIntent.putExtra(Intent.EXTRA_TEXT,"This is Text to send"+ editName.getText());
+                sendIntent.putExtra(Intent.EXTRA_TITLE,"This is a sent Title");
+                sendIntent.setType("text/plain");
+                Intent shareIntent = Intent.createChooser(sendIntent,null);
+                startActivity(shareIntent);
+                return true;
+            case R.id.notifyStart:
+                String dateFromString = editSDate.getText().toString();
+                long trigger = DateParse.dateParse(dateFromString).getTime();
+                Intent intent  = new Intent(CreateCourse.this,MyReceiver.class);
+                intent.putExtra("key","?");
+                PendingIntent sender= PendingIntent.getBroadcast(CreateCourse.this, ++numAlert, intent, 0);
+                AlarmManager alarmManager=(AlarmManager) getSystemService(Context.ALARM_SERVICE);
+                alarmManager.set(AlarmManager.RTC_WAKEUP, trigger, sender);
+                return true;
+            case R.id.notifyEnd:
+                String dateFromString2 = editEDate.getText().toString();
+                long trigger2 = DateParse.dateParse(dateFromString2).getTime();
+                Intent intent2  = new Intent(CreateCourse.this,MyReceiver.class);
+                intent2.putExtra("key","?");
+                PendingIntent sender2= PendingIntent.getBroadcast(CreateCourse.this, ++numAlert, intent2, 0);
+                AlarmManager alarmManager2=(AlarmManager) getSystemService(Context.ALARM_SERVICE);
+                alarmManager2.set(AlarmManager.RTC_WAKEUP, trigger2, sender2);
+                return true;
+            case R.id.refresh:
+                RecyclerView recyclerView = findViewById(R.id.recyclerAssessmentView);
+                List<Assessment> allAssessment = new ArrayList<>();
+                allAssessment.addAll(assessmentRepo.getAllAssessments());
+
+                for (Assessment assessment : assessmentRepo.getAllAssessments()) {
+                    if (assessment.getCourseID() == courseID)
+                        allAssessment.add(assessment);
+                }
+
+                final AssessmentViewAdapter assessmentAdapter = new AssessmentViewAdapter(this);
+                recyclerView.setAdapter(assessmentAdapter);
+                recyclerView.setLayoutManager(new LinearLayoutManager(this));
+                assessmentAdapter.setAssessments(allAssessment);
+
+
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
 
     public void addCAssessment(View view) {
         Intent intent = new Intent(CreateCourse.this, CreateAssessment.class);
-        courseID= getIntent().getIntExtra("CourseID", -1);
+        courseID= getIntent().getIntExtra("courseID", -1);
         intent.putExtra("key2", courseID);
         startActivity(intent);
 

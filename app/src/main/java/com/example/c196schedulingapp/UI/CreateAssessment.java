@@ -2,9 +2,14 @@ package com.example.c196schedulingapp.UI;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlarmManager;
 import android.app.DatePickerDialog;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -20,6 +25,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Objects;
 
 public class CreateAssessment extends AppCompatActivity {
 
@@ -31,6 +37,7 @@ public class CreateAssessment extends AppCompatActivity {
     EditText editEDate;
     int courseID;
     int assessmentID;
+    int numAlert;
     AssessmentRepo assessmentRepo;
     DatePickerDialog.OnDateSetListener date1;
     DatePickerDialog.OnDateSetListener date2;
@@ -40,6 +47,8 @@ public class CreateAssessment extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_assessment);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         assessmentName = getIntent().getStringExtra("assessmentName");
         editName = findViewById(R.id.assessmentName);
@@ -54,7 +63,7 @@ public class CreateAssessment extends AppCompatActivity {
         editEDate.setText(endDate);
 
         assessmentRepo = new AssessmentRepo(getApplication());
-        courseID = getIntent().getIntExtra("CourseID", -1);
+        courseID = getIntent().getIntExtra("courseID", -1);
 
         if (courseID==-1) {
                 Bundle extras = getIntent().getExtras();
@@ -103,6 +112,50 @@ public class CreateAssessment extends AppCompatActivity {
         });
 
     }
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                this.finish();
+                return true;
+            case R.id.share:
+                // TODO fix to send correct data
+                Intent sendIntent = new Intent();
+                sendIntent.setAction(Intent.ACTION_SEND);
+                sendIntent.putExtra(Intent.EXTRA_TEXT,"This is Text to send"+ editName.getText());
+                sendIntent.putExtra(Intent.EXTRA_TITLE,"This is a sent Title");
+                sendIntent.setType("text/plain");
+                Intent shareIntent = Intent.createChooser(sendIntent,null);
+                startActivity(shareIntent);
+                return true;
+            case R.id.notifyStart:
+                String dateFromString = editSDate.getText().toString();
+                long trigger = DateParse.dateParse(dateFromString).getTime();
+                Intent intent  = new Intent(CreateAssessment.this,MyReceiver.class);
+                intent.putExtra("key","?");
+                PendingIntent sender= PendingIntent.getBroadcast(CreateAssessment.this, ++numAlert, intent, 0);
+                AlarmManager alarmManager=(AlarmManager) getSystemService(Context.ALARM_SERVICE);
+                alarmManager.set(AlarmManager.RTC_WAKEUP, trigger, sender);
+                return true;
+            case R.id.notifyEnd:
+                String dateFromString2 = editEDate.getText().toString();
+                long trigger2 = DateParse.dateParse(dateFromString2).getTime();
+                Intent intent2  = new Intent(CreateAssessment.this,MyReceiver.class);
+                intent2.putExtra("key","?");
+                PendingIntent sender2= PendingIntent.getBroadcast(CreateAssessment.this, ++numAlert, intent2, 0);
+                AlarmManager alarmManager2=(AlarmManager) getSystemService(Context.ALARM_SERVICE);
+                alarmManager2.set(AlarmManager.RTC_WAKEUP, trigger2, sender2);
+                return true;
+
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    public boolean onCreateOptionsMenu(Menu menu){
+        getMenuInflater().inflate(R.menu.menu,menu);
+        return true;
+    }
+
 
     public void onCancel(View view) {
         this.finish();
