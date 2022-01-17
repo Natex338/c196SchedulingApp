@@ -59,7 +59,6 @@ public class CreateCourse extends AppCompatActivity {
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-
         name = getIntent().getStringExtra("courseTitle");
         editName = findViewById(R.id.courseName);
         editName.setText(name);
@@ -96,13 +95,12 @@ public class CreateCourse extends AppCompatActivity {
         RecyclerView recyclerView = findViewById(R.id.recyclerAssessmentView);
         List<Assessment> allAssessment = new ArrayList<>();
         allAssessment.addAll(assessmentRepo.getAllAssessments());
-        /*
+
         for (Assessment assessment : assessmentRepo.getAllAssessments()) {
             if (assessment.getCourseID() == courseID)
                 allAssessment.add(assessment);
         }
 
-         */
         final AssessmentViewAdapter assessmentAdapter = new AssessmentViewAdapter(this);
         recyclerView.setAdapter(assessmentAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -158,7 +156,8 @@ public class CreateCourse extends AppCompatActivity {
 
     public void addCAssessment(View view) {
         Intent intent = new Intent(CreateCourse.this, CreateAssessment.class);
-        intent.putExtra("key",courseID);
+        courseID= getIntent().getIntExtra("CourseID", -1);
+        intent.putExtra("key2", courseID);
         startActivity(intent);
 
     }

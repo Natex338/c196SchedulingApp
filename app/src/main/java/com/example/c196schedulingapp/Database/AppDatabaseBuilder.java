@@ -14,13 +14,12 @@ import com.example.c196schedulingapp.Entity.Assessment;
 import com.example.c196schedulingapp.Entity.Course;
 import com.example.c196schedulingapp.Entity.Term;
 
-@Database(entities = {Term.class, Course.class, Assessment.class}, version = 2, exportSchema = false)
+@Database(entities = {Term.class, Course.class, Assessment.class}, version = 1, exportSchema = false)
 @TypeConverters(DateConverter.class)
 public abstract class AppDatabaseBuilder extends RoomDatabase {
     public abstract TermDAO termDAO();
     public abstract CourseDAO courseDAO();
     public abstract AssessmentDAO assessmentDAO();
-
     private static volatile AppDatabaseBuilder INSTANCE;
 
 

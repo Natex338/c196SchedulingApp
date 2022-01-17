@@ -11,8 +11,6 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.c196schedulingapp.Database.AssessmentRepo;
-import com.example.c196schedulingapp.Database.CourseRepo;
-import com.example.c196schedulingapp.Database.TermRepo;
 import com.example.c196schedulingapp.Entity.Assessment;
 import com.example.c196schedulingapp.Entity.Course;
 import com.example.c196schedulingapp.R;
@@ -31,10 +29,9 @@ public class CreateAssessment extends AppCompatActivity {
     EditText editName;
     EditText editSDate;
     EditText editEDate;
-    int id;
     int courseID;
-    int assessmentID=1;
-    AssessmentRepo repository;
+    int assessmentID;
+    AssessmentRepo assessmentRepo;
     DatePickerDialog.OnDateSetListener date1;
     DatePickerDialog.OnDateSetListener date2;
     final Calendar myCalendar = Calendar.getInstance();
@@ -56,12 +53,13 @@ public class CreateAssessment extends AppCompatActivity {
         editEDate = findViewById(R.id.assessmentEnd);
         editEDate.setText(endDate);
 
-        repository = new AssessmentRepo(getApplication());
-        courseID = getIntent().getIntExtra("courseID", -1);
+        assessmentRepo = new AssessmentRepo(getApplication());
+        courseID = getIntent().getIntExtra("CourseID", -1);
 
-        Bundle extras = getIntent().getExtras();
-        if (extras != null) {
-            id = extras.getInt("key");
+        if (courseID==-1) {
+                Bundle extras = getIntent().getExtras();
+                if (extras != null) { courseID = extras.getInt("key2");
+             }
         }
 
 
@@ -112,7 +110,6 @@ public class CreateAssessment extends AppCompatActivity {
 
     public void saveAssessment(View view) {
 
-
        if (editEDate.getText().toString().trim().isEmpty() || editSDate.getText().toString().trim().isEmpty()|| editName.getText().toString().trim().isEmpty()) {
             Context context = getApplicationContext();
             CharSequence text = "Please enter all required text fields before saving!";
@@ -125,13 +122,16 @@ public class CreateAssessment extends AppCompatActivity {
            Date screenDate = DateParse.dateParse(editSDate.getText().toString());
            Date screenDate2 = DateParse.dateParse(editEDate.getText().toString());
 
+
            if (assessmentName == null) {
-               assessmentID = repository.getAllAssessments().get(repository.getAllAssessments().size()-1).getAssessmentID();
-               Assessment newAssessment = new Assessment(++assessmentID,id,assessmentName,screenDate,screenDate2);
-               repository.insert(newAssessment);
+               assessmentID = assessmentRepo.getAllAssessments().get(assessmentRepo.getAllAssessments().size()-1).getAssessmentID();
+               Assessment newAssessment = new Assessment(++assessmentID, courseID,screenName,screenDate, screenDate2);
+               assessmentRepo.insert(newAssessment);
+
            } else {
-               //Assessment oldAssessment = new Assessment(getIntent().getIntExtra("AssessmentID", -1), screenName, courseID,);
-               //repository.update(oldAssessment);
+
+               Assessment oldAssessment = new Assessment(getIntent().getIntExtra("assessmentID", -1),courseID, screenName,screenDate, screenDate2);
+               assessmentRepo.update(oldAssessment);
            }
        }
         this.finish();

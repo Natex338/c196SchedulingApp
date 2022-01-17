@@ -43,11 +43,12 @@ public class AssessmentViewAdapter extends RecyclerView.Adapter<AssessmentViewAd
                 public void onClick(View v) {
                     int position = getAdapterPosition();
                     final Assessment current = mAssessments.get(position);
-                    Intent intent = new Intent(context, Assessment.class);
-                    intent.putExtra("courseTitle", current.getAssessmentName());
-                    intent.putExtra("courseStart", DateParse.dateParseString(current.getStartDate()));
-                    intent.putExtra("courseEnd", DateParse.dateParseString(current.getEndDate()));
-                    intent.putExtra("termID", current.getAssessmentID());
+                    Intent intent = new Intent(context, CreateAssessment.class);
+                    intent.putExtra("assessmentName", current.getAssessmentName());
+                    intent.putExtra("startDate", DateParse.dateParseString(current.getStartDate()));
+                    intent.putExtra("endDate", DateParse.dateParseString(current.getEndDate()));
+                    intent.putExtra("assessmentID", current.getAssessmentID());
+                    intent.putExtra("courseID",current.getCourseID());
                     context.startActivity(intent);
 
                 }
@@ -66,9 +67,7 @@ public class AssessmentViewAdapter extends RecyclerView.Adapter<AssessmentViewAd
     @Override
     public void onBindViewHolder(@NonNull AssessmentViewHolder holder, int position) {
         if (mAssessments != null) {
-
             Assessment current = mAssessments.get(position);
-            int id = current.getAssessmentID();
             holder.listItemView.setText((current.getAssessmentName()));
             holder.listItemView1.setText(DateParse.dateParseString(current.getStartDate()));
             holder.listItemView2.setText(DateParse.dateParseString(current.getEndDate()));

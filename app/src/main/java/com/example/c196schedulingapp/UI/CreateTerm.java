@@ -24,7 +24,6 @@ import com.example.c196schedulingapp.Entity.Term;
 import com.example.c196schedulingapp.R;
 import com.example.c196schedulingapp.Util.DateParse;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -41,7 +40,7 @@ public class CreateTerm extends AppCompatActivity {
     EditText editName;
     EditText editSDate;
     EditText editEDate;
-    int id;
+    int termId;
     TermRepo repository;
     DatePickerDialog.OnDateSetListener date1;
     DatePickerDialog.OnDateSetListener date2;
@@ -68,7 +67,7 @@ public class CreateTerm extends AppCompatActivity {
         editEDate = findViewById(R.id.termEnd);
         editEDate.setText(endDate);
 
-        id = getIntent().getIntExtra("termID", 0);
+        termId = getIntent().getIntExtra("termID", 0);
 
         repository = new TermRepo(getApplication());
         courseRepo = new CourseRepo(getApplication());
@@ -77,7 +76,7 @@ public class CreateTerm extends AppCompatActivity {
         RecyclerView recyclerView = findViewById(R.id.recyclerCourseView);
         List<Course> allCourses = new ArrayList<>();
         for (Course course : courseRepo.getAllCourses()) {
-            if (course.getTermID() == id)
+            if (course.getTermID() == termId)
                 allCourses.add(course);
         }
 
@@ -185,8 +184,8 @@ public class CreateTerm extends AppCompatActivity {
             Date screenDate2 = DateParse.dateParse(editEDate.getText().toString());
 
             if (name == null) {
-                id = repository.getAllTerms().get(repository.getAllTerms().size() - 1).getTermID();
-                Term newTerm = new Term(++id, screenName, screenDate, screenDate2);
+                termId = repository.getAllTerms().get(repository.getAllTerms().size() - 1).getTermID();
+                Term newTerm = new Term(++termId, screenName, screenDate, screenDate2);
                 repository.insert(newTerm);
             } else {
                 Term oldTerm = new Term(getIntent().getIntExtra("termID", -1), screenName, screenDate, screenDate2);
@@ -222,7 +221,7 @@ public class CreateTerm extends AppCompatActivity {
 
     public void addCourse(View view) {
         Intent intent = new Intent(CreateTerm.this, CreateCourse.class);
-        intent.putExtra("key",id);
+        intent.putExtra("key", termId);
         startActivity(intent);
     }
 }
