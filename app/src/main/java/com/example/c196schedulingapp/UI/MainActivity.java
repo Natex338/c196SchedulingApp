@@ -87,8 +87,8 @@ public class MainActivity extends AppCompatActivity {
         Course course = new Course(1, "Test Course", term.getTermID(), "Active", "Nathan", "888888888", "Email",new  Date("11/01/2022"),new  Date("11/01/2022"));
         courseRepo.insert(course);
 
-        Assessment assessment= new Assessment(1,course.getCourseID(),"Test Assessment",new  Date("11/01/2022"),new  Date("11/01/2022"));
-        assessmentRepo.insert(assessment);
+      //  Assessment assessment= new Assessment(1,course.getCourseID(),"Test Assessment",new  Date("11/01/2022"),new  Date("11/01/2022"));
+     //   assessmentRepo.insert(assessment);
     }
 
 }

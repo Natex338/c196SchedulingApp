@@ -1,23 +1,31 @@
 package com.example.c196schedulingapp.UI;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Toast;
 
+import com.example.c196schedulingapp.Database.AssessmentRepo;
 import com.example.c196schedulingapp.Database.CourseRepo;
+import com.example.c196schedulingapp.Entity.Assessment;
 import com.example.c196schedulingapp.Entity.Course;
 import com.example.c196schedulingapp.Entity.Term;
 import com.example.c196schedulingapp.R;
 import com.example.c196schedulingapp.Util.DateParse;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
@@ -38,6 +46,7 @@ public class CreateCourse extends AppCompatActivity {
     int courseID;
     int termID;
     CourseRepo courseRepo;
+    AssessmentRepo assessmentRepo;
 
     DatePickerDialog.OnDateSetListener date1;
     DatePickerDialog.OnDateSetListener date2;
@@ -81,10 +90,26 @@ public class CreateCourse extends AppCompatActivity {
         if (extras != null) {
             termID = extras.getInt("key");
         }
-
-
-
         courseRepo = new CourseRepo(getApplication());
+        assessmentRepo= new AssessmentRepo(getApplication());
+
+        RecyclerView recyclerView = findViewById(R.id.recyclerAssessmentView);
+        List<Assessment> allAssessment = new ArrayList<>();
+        allAssessment.addAll(assessmentRepo.getAllAssessments());
+        /*
+        for (Assessment assessment : assessmentRepo.getAllAssessments()) {
+            if (assessment.getCourseID() == courseID)
+                allAssessment.add(assessment);
+        }
+
+         */
+        final AssessmentViewAdapter assessmentAdapter = new AssessmentViewAdapter(this);
+        recyclerView.setAdapter(assessmentAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        assessmentAdapter.setAssessments(allAssessment);
+
+
+
 
         date1 = new DatePickerDialog.OnDateSetListener() {
 
@@ -139,26 +164,32 @@ public class CreateCourse extends AppCompatActivity {
     }
 
     public void saveCourse(View view) {
-        String screenName = editName.getText().toString();
-        Date screenDate = DateParse.dateParse(editSDate.getText().toString());
-        Date screenDate2 = DateParse.dateParse(editEDate.getText().toString());
-        String screenInstructor = editInstructor.getText().toString();
-        String screenInstructorEmail = editInstructorEmail.getText().toString();
-        String screenInstructorPhone = editInstructorPhone.getText().toString();
-
-        if (name == null) {
-            courseID = courseRepo.getAllCourses().get(courseRepo.getAllCourses().size()-1).getCourseID();
-            Course newCourse = new Course(++courseID, screenName, termID, status, screenInstructor, screenInstructorPhone, screenInstructorEmail, screenDate, screenDate2);
-            courseRepo.insert(newCourse);
-        } else {
-            Course oldCourse = new Course(getIntent().getIntExtra("CourseID", -1), screenName, termID, status, screenInstructor, screenInstructorPhone, screenInstructorEmail, screenDate, screenDate2);
-            courseRepo.update(oldCourse);
+        if (editEDate.getText().toString().trim().isEmpty() || editSDate.getText().toString().trim().isEmpty()|| editName.getText().toString().trim().isEmpty()|| editInstructor.getText().toString().trim().isEmpty()
+                || editInstructorEmail.getText().toString().trim().isEmpty()|| editInstructorPhone.getText().toString().trim().isEmpty()) {
+            Context context = getApplicationContext();
+            CharSequence text = "Please enter all required text fields before saving!";
+            int duration = Toast.LENGTH_SHORT;
+            Toast toast = Toast.makeText(context, text, duration);
+            toast.show();
         }
+        else {
+            String screenName = editName.getText().toString();
+            Date screenDate = DateParse.dateParse(editSDate.getText().toString());
+            Date screenDate2 = DateParse.dateParse(editEDate.getText().toString());
+            String screenInstructor = editInstructor.getText().toString();
+            String screenInstructorEmail = editInstructorEmail.getText().toString();
+            String screenInstructorPhone = editInstructorPhone.getText().toString();
 
+            if (name == null) {
+                courseID = courseRepo.getAllCourses().get(courseRepo.getAllCourses().size() - 1).getCourseID();
+                Course newCourse = new Course(++courseID, screenName, termID, status, screenInstructor, screenInstructorPhone, screenInstructorEmail, screenDate, screenDate2);
+                courseRepo.insert(newCourse);
+            } else {
+                Course oldCourse = new Course(getIntent().getIntExtra("CourseID", -1), screenName, termID, status, screenInstructor, screenInstructorPhone, screenInstructorEmail, screenDate, screenDate2);
+                courseRepo.update(oldCourse);
+            }
+        }
         this.finish();
-
-      //  Intent intent = new Intent(CreateCourse.this, CreateTerm.class);
-       // startActivity(intent);
     }
 
 

@@ -19,7 +19,7 @@ public class AssessmentRepo {
         mAssessmentDAO = db.assessmentDAO();
     }
 
-    public List<Assessment> getAllCourses(){
+    public List<Assessment> getAllAssessments(){
         databaseExecutor.execute(()-> mAllAssessments=mAssessmentDAO.getAllAssessments());
         try {
             Thread.sleep(100);

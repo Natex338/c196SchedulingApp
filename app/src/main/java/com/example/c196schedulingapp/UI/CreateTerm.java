@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.c196schedulingapp.Database.CourseRepo;
 import com.example.c196schedulingapp.Database.TermRepo;
@@ -113,7 +114,6 @@ public class CreateTerm extends AppCompatActivity {
         editSDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO Auto-generated method stub
                 new DatePickerDialog(CreateTerm.this, date1, myCalendar
                         .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
                         myCalendar.get(Calendar.DAY_OF_MONTH)).show();
@@ -123,7 +123,6 @@ public class CreateTerm extends AppCompatActivity {
         editEDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO Auto-generated method stub
                 new DatePickerDialog(CreateTerm.this, date2, myCalendar
                         .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
                         myCalendar.get(Calendar.DAY_OF_MONTH)).show();
@@ -140,6 +139,7 @@ public class CreateTerm extends AppCompatActivity {
                 this.finish();
                 return true;
             case R.id.share:
+                // TODO fix to send correct data
                 Intent sendIntent = new Intent();
                 sendIntent.setAction(Intent.ACTION_SEND);
                 sendIntent.putExtra(Intent.EXTRA_TEXT,"This is Text to send"+ editName.getText());
@@ -148,7 +148,7 @@ public class CreateTerm extends AppCompatActivity {
                 Intent shareIntent = Intent.createChooser(sendIntent,null);
                 startActivity(shareIntent);
                 return true;
-            case R.id.notify:
+            case R.id.notifyStart:
                 String dateFromString = editSDate.getText().toString();
                 long trigger = DateParse.dateParse(dateFromString).getTime();
                 Intent intent  = new Intent(CreateTerm.this,MyReceiver.class);
@@ -157,27 +157,45 @@ public class CreateTerm extends AppCompatActivity {
                 AlarmManager alarmManager=(AlarmManager) getSystemService(Context.ALARM_SERVICE);
                 alarmManager.set(AlarmManager.RTC_WAKEUP, trigger, sender);
                 return true;
+            case R.id.notifyEnd:
+                String dateFromString2 = editEDate.getText().toString();
+                long trigger2 = DateParse.dateParse(dateFromString2).getTime();
+                Intent intent2  = new Intent(CreateTerm.this,MyReceiver.class);
+                intent2.putExtra("key","?");
+                PendingIntent sender2= PendingIntent.getBroadcast(CreateTerm.this, ++numAlert, intent2, 0);
+                AlarmManager alarmManager2=(AlarmManager) getSystemService(Context.ALARM_SERVICE);
+                alarmManager2.set(AlarmManager.RTC_WAKEUP, trigger2, sender2);
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
     public void saveTerm(View view) {
-    String screenName= editName.getText().toString();
-    Date screenDate= DateParse.dateParse(editSDate.getText().toString());
-    Date screenDate2= DateParse.dateParse(editEDate.getText().toString());
 
-        if (name==null) {
-            id=repository.getAllTerms().get(repository.getAllTerms().size()-1).getTermID();
-            Term newTerm = new Term(++id, screenName, screenDate,screenDate2);
-            repository.insert(newTerm);
+        if (editEDate.getText().toString().trim().isEmpty() || editSDate.getText().toString().trim().isEmpty()|| editName.getText().toString().trim().isEmpty()) {
+            Context context = getApplicationContext();
+            CharSequence text = "Please enter all required text fields before saving!";
+            int duration = Toast.LENGTH_SHORT;
+            Toast toast = Toast.makeText(context, text, duration);
+            toast.show();
         }
-        else {
-            Term oldTerm=new Term(getIntent().getIntExtra("termID", -1),screenName,screenDate,screenDate2 );
-            repository.update(oldTerm);
-        }
+        else{
+            String screenName = editName.getText().toString();
+            Date screenDate = DateParse.dateParse(editSDate.getText().toString());
+            Date screenDate2 = DateParse.dateParse(editEDate.getText().toString());
 
-        Intent intent = new Intent (CreateTerm.this, MainActivity.class );
-        startActivity(intent);
+            if (name == null) {
+                id = repository.getAllTerms().get(repository.getAllTerms().size() - 1).getTermID();
+                Term newTerm = new Term(++id, screenName, screenDate, screenDate2);
+                repository.insert(newTerm);
+            } else {
+                Term oldTerm = new Term(getIntent().getIntExtra("termID", -1), screenName, screenDate, screenDate2);
+                repository.update(oldTerm);
+            }
+
+            Intent intent = new Intent(CreateTerm.this, MainActivity.class);
+            startActivity(intent);
+        }
     }
 
     public boolean onCreateOptionsMenu(Menu menu){
