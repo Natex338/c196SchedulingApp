@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
         courseRepo = new CourseRepo(getApplication());
         assessmentRepo = new AssessmentRepo(getApplication());
 
-        setSampleDatabase();
+       // setSampleDatabase();
 
         List<Term> allTerms=termRepo.getAllTerms();
         RecyclerView recyclerView=findViewById(R.id.recyclerView);
@@ -84,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
         termRepo.insert(term);
         Term term2 = new Term(2, "Term2",java.util.Calendar.getInstance().getTime(),new  Date("11/01/2022"));
         termRepo.insert(term2);
-        Course course = new Course(1, "Test Course", term.getTermID(), "Active", "Nathan", "888888888", "Email",new  Date("11/01/2022"),new  Date("11/01/2022"));
+        Course course = new Course(1, "Test Course", term.getTermID(), "Completed", "Nathan", "888888888", "Email",new  Date("11/01/2022"),new  Date("11/01/2022"));
         courseRepo.insert(course);
         Assessment assessment= new Assessment(1,course.getCourseID(),"Test Assessment",new  Date("11/01/2022"),new  Date("11/01/2022"));
         assessmentRepo.insert(assessment);

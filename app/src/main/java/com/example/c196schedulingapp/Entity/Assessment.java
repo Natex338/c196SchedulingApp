@@ -6,11 +6,7 @@ import androidx.room.PrimaryKey;
 
 import java.util.Date;
 
-@Entity(tableName = "assessment_table",
-        foreignKeys = {@ForeignKey(entity = Course.class,
-                parentColumns = "courseID",
-                childColumns = "courseID",
-                onDelete = ForeignKey.CASCADE)})
+@Entity(tableName = "assessment_table")
 
 public class Assessment {
     @PrimaryKey(autoGenerate = true)

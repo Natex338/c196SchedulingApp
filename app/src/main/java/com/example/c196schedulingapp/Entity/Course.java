@@ -7,12 +7,7 @@ import androidx.room.PrimaryKey;
 import java.util.Date;
 import java.util.EnumMap;
 
-@Entity(tableName = "course_table",
-        foreignKeys = {@ForeignKey(entity = Term.class,
-                parentColumns = "termID",
-                childColumns = "termID",
-                onDelete = ForeignKey.CASCADE)})
-
+@Entity(tableName = "course_table")
 
 public class Course {
     @PrimaryKey(autoGenerate = true)

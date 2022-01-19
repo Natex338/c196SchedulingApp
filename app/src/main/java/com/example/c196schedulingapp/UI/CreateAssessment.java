@@ -177,7 +177,7 @@ public class CreateAssessment extends AppCompatActivity {
 
 
            if (assessmentName == null) {
-               assessmentID = assessmentRepo.getAllAssessments().get(assessmentRepo.getAllAssessments().size()-1).getAssessmentID();
+               assessmentID = (assessmentRepo.getAllAssessments().size());
                Assessment newAssessment = new Assessment(++assessmentID, courseID,screenName,screenDate, screenDate2);
                assessmentRepo.insert(newAssessment);
 

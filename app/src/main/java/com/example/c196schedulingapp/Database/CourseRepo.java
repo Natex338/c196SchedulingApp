@@ -50,5 +50,15 @@ public class CourseRepo {
 
     }
 
+    public void delete(Course course){
+        databaseExecutor.execute(()-> mCourseDAO.delete(course));
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+    }
+
 
 }

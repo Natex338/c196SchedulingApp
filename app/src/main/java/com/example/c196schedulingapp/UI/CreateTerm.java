@@ -40,7 +40,7 @@ public class CreateTerm extends AppCompatActivity {
     EditText editName;
     EditText editSDate;
     EditText editEDate;
-    int termId;
+    int termId = 1;
     TermRepo repository;
     DatePickerDialog.OnDateSetListener date1;
     DatePickerDialog.OnDateSetListener date2;
@@ -184,7 +184,7 @@ public class CreateTerm extends AppCompatActivity {
             Date screenDate2 = DateParse.dateParse(editEDate.getText().toString());
 
             if (name == null) {
-                termId = repository.getAllTerms().get(repository.getAllTerms().size() - 1).getTermID();
+                termId = (repository.getAllTerms().size());
                 Term newTerm = new Term(++termId, screenName, screenDate, screenDate2);
                 repository.insert(newTerm);
             } else {
@@ -201,7 +201,6 @@ public class CreateTerm extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.menu,menu);
         return true;
     }
-
 
     public void onCancel(View view) {
         this.finish();
