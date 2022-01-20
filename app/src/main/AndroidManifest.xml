@@ -11,9 +11,11 @@
         android:theme="@style/Theme.C196SchedulingApp">
         <activity
             android:name=".UI.CreateAssessment"
+            android:label="Create Assessment"
             android:exported="false" />
         <activity
             android:name=".UI.CreateCourse"
+            android:label="Create Course"
             android:exported="false" />
 
         <receiver
@@ -23,6 +25,7 @@
 
         <activity
             android:name=".UI.CreateTerm"
+            android:label="Create Term"
             android:exported="false" />
         <activity
             android:name=".UI.MainActivity"
