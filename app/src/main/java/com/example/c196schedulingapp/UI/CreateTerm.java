@@ -5,9 +5,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.AlarmManager;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.PendingIntent;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -19,7 +21,6 @@ import android.widget.Toast;
 
 import com.example.c196schedulingapp.Database.CourseRepo;
 import com.example.c196schedulingapp.Database.TermRepo;
-import com.example.c196schedulingapp.Entity.Assessment;
 import com.example.c196schedulingapp.Entity.Course;
 import com.example.c196schedulingapp.Entity.Term;
 import com.example.c196schedulingapp.R;
@@ -41,7 +42,7 @@ public class CreateTerm extends AppCompatActivity {
     EditText editName;
     EditText editSDate;
     EditText editEDate;
-    int termId = 1;
+    int termId;
     TermRepo repository;
     DatePickerDialog.OnDateSetListener date1;
     DatePickerDialog.OnDateSetListener date2;
@@ -69,7 +70,6 @@ public class CreateTerm extends AppCompatActivity {
         editEDate.setText(endDate);
 
         termId = getIntent().getIntExtra("termID", -1);
-
         repository = new TermRepo(getApplication());
         courseRepo = new CourseRepo(getApplication());
 
@@ -85,8 +85,6 @@ public class CreateTerm extends AppCompatActivity {
         recyclerView.setAdapter(courseAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         courseAdapter.setCourse(allCourses);
-
-
 
 
 
@@ -110,7 +108,6 @@ public class CreateTerm extends AppCompatActivity {
                 updateLabelEnd();
             }
         };
-
         editSDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -119,7 +116,6 @@ public class CreateTerm extends AppCompatActivity {
                         myCalendar.get(Calendar.DAY_OF_MONTH)).show();
             }
         });
-
         editEDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -131,7 +127,6 @@ public class CreateTerm extends AppCompatActivity {
 
 
     }
-
 
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -169,18 +164,24 @@ public class CreateTerm extends AppCompatActivity {
             case R.id.refresh:
                 RecyclerView recyclerView = findViewById(R.id.recyclerCourseView);
                 List<Course> allCourse = new ArrayList<>();
-               // allCourse.addAll(courseRepo.getAllCourses());
-
                 for (Course course : courseRepo.getAllCourses()) {
                     if (course.getTermID() == termId)
                         allCourse.add(course);
                 }
-
                 final CourseViewAdapter courseAdapter = new CourseViewAdapter(this);
                 recyclerView.setAdapter(courseAdapter);
                 recyclerView.setLayoutManager(new LinearLayoutManager(this));
                 courseAdapter.setCourse(allCourse);
 
+            case R.id.delete:
+                String message="";
+                boolean termWithCourses=false;
+                for (Course course : courseRepo.getAllCourses()){
+                    if (course.getTermID()==termId){
+                        termWithCourses=true;
+
+                    }
+                }
         }
         return super.onOptionsItemSelected(item);
     }
