@@ -104,12 +104,14 @@ public class CreateCourse extends AppCompatActivity implements AdapterView.OnIte
         editInstructorPhone = findViewById(R.id.instructorPhone);
         editInstructorPhone.setText(instructorPhone);
 
-
+        courseID = getIntent().getIntExtra("courseID", -1);
         termID = getIntent().getIntExtra("termID", -1);
 
-        Bundle extras = getIntent().getExtras();
-        if (extras != null) {
-            termID = extras.getInt("key");
+        if (termID==-1) {
+            Bundle extras = getIntent().getExtras();
+            if (extras != null) {
+                termID = extras.getInt("key");
+            }
         }
         courseRepo = new CourseRepo(getApplication());
         assessmentRepo= new AssessmentRepo(getApplication());
@@ -260,12 +262,25 @@ public class CreateCourse extends AppCompatActivity implements AdapterView.OnIte
             String screenInstructorEmail = editInstructorEmail.getText().toString();
             String screenInstructorPhone = editInstructorPhone.getText().toString();
 
-            if (name == null) {
-                courseID = courseRepo.getAllCourses().size();
-                Course newCourse = new Course(++courseID, screenName, termID, status, screenInstructor, screenInstructorPhone, screenInstructorEmail, screenDate, screenDate2);
+            if (courseID == -1) {
+                List<Course> allCourses = courseRepo.getAllCourses();
+                //courseID = allCourses.get(allCourses.size() - 1).getCourseID();
+                courseID = 1;
+                System.out.println(courseRepo.getAllCourses().size());
+                Course newCourse = new Course(
+                        ++courseID,
+                        screenName,
+                        termID,
+                        status,
+                        screenInstructor,
+                        screenInstructorPhone,
+                        screenInstructorEmail,
+                        screenDate,
+                        screenDate2);
                 courseRepo.insert(newCourse);
             } else {
-                Course oldCourse = new Course(getIntent().getIntExtra("courseID", -1), screenName, termID, status, screenInstructor, screenInstructorPhone, screenInstructorEmail, screenDate, screenDate2);
+                System.out.println(termID);
+                Course oldCourse = new Course(courseID, screenName, termID, status, screenInstructor, screenInstructorPhone, screenInstructorEmail, screenDate, screenDate2);
                 courseRepo.update(oldCourse);
             }
         }

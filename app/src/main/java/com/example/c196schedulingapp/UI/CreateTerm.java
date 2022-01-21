@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.example.c196schedulingapp.Database.CourseRepo;
 import com.example.c196schedulingapp.Database.TermRepo;
+import com.example.c196schedulingapp.Entity.Assessment;
 import com.example.c196schedulingapp.Entity.Course;
 import com.example.c196schedulingapp.Entity.Term;
 import com.example.c196schedulingapp.R;
@@ -67,7 +68,7 @@ public class CreateTerm extends AppCompatActivity {
         editEDate = findViewById(R.id.termEnd);
         editEDate.setText(endDate);
 
-        termId = getIntent().getIntExtra("termID", 0);
+        termId = getIntent().getIntExtra("termID", -1);
 
         repository = new TermRepo(getApplication());
         courseRepo = new CourseRepo(getApplication());
@@ -165,6 +166,21 @@ public class CreateTerm extends AppCompatActivity {
                 AlarmManager alarmManager2=(AlarmManager) getSystemService(Context.ALARM_SERVICE);
                 alarmManager2.set(AlarmManager.RTC_WAKEUP, trigger2, sender2);
                 return true;
+            case R.id.refresh:
+                RecyclerView recyclerView = findViewById(R.id.recyclerCourseView);
+                List<Course> allCourse = new ArrayList<>();
+               // allCourse.addAll(courseRepo.getAllCourses());
+
+                for (Course course : courseRepo.getAllCourses()) {
+                    if (course.getTermID() == termId)
+                        allCourse.add(course);
+                }
+
+                final CourseViewAdapter courseAdapter = new CourseViewAdapter(this);
+                recyclerView.setAdapter(courseAdapter);
+                recyclerView.setLayoutManager(new LinearLayoutManager(this));
+                courseAdapter.setCourse(allCourse);
+
         }
         return super.onOptionsItemSelected(item);
     }
@@ -184,7 +200,7 @@ public class CreateTerm extends AppCompatActivity {
             Date screenDate2 = DateParse.dateParse(editEDate.getText().toString());
 
             if (name == null) {
-                termId = (repository.getAllTerms().size());
+                termId = (repository.getAllTerms().size()-1);
                 Term newTerm = new Term(++termId, screenName, screenDate, screenDate2);
                 repository.insert(newTerm);
             } else {

@@ -45,14 +45,7 @@ public class Course {
     public String getCourseTitle() {
         return courseTitle;
     }
-    /*public Date getStartDate() {
-        return startDate;
-    }
-    public Date getEndDate() {
-        return endDate;
-    }
 
-     */
     public String getStatus() {
         return status;
     }
