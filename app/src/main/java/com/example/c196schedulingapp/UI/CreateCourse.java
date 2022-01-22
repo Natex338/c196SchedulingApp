@@ -133,6 +133,8 @@ public class CreateCourse extends AppCompatActivity implements AdapterView.OnIte
 
 
 
+
+
         date1 = new DatePickerDialog.OnDateSetListener() {
 
             @Override
@@ -174,8 +176,6 @@ public class CreateCourse extends AppCompatActivity implements AdapterView.OnIte
             }
         });
     }
-
-
 
     public boolean onCreateOptionsMenu(Menu menu){
         getMenuInflater().inflate(R.menu.menu,menu);
