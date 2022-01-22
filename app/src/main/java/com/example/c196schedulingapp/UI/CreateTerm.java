@@ -5,11 +5,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.AlarmManager;
-import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.PendingIntent;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -25,6 +23,7 @@ import com.example.c196schedulingapp.Entity.Course;
 import com.example.c196schedulingapp.Entity.Term;
 import com.example.c196schedulingapp.R;
 import com.example.c196schedulingapp.Util.DateParse;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -73,6 +72,11 @@ public class CreateTerm extends AppCompatActivity {
         repository = new TermRepo(getApplication());
         courseRepo = new CourseRepo(getApplication());
 
+        if (name==null){
+            FloatingActionButton button = findViewById(R.id.floatingActionButton);
+            button.hide();
+        }
+
 
         RecyclerView recyclerView = findViewById(R.id.recyclerCourseView);
         List<Course> allCourses = new ArrayList<>();
@@ -85,8 +89,6 @@ public class CreateTerm extends AppCompatActivity {
         recyclerView.setAdapter(courseAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         courseAdapter.setCourse(allCourses);
-
-
 
         date1 = new DatePickerDialog.OnDateSetListener() {
 
@@ -172,14 +174,12 @@ public class CreateTerm extends AppCompatActivity {
                 recyclerView.setAdapter(courseAdapter);
                 recyclerView.setLayoutManager(new LinearLayoutManager(this));
                 courseAdapter.setCourse(allCourse);
-
             case R.id.delete:
                 String message="";
                 boolean termWithCourses=false;
                 for (Course course : courseRepo.getAllCourses()){
                     if (course.getTermID()==termId){
                         termWithCourses=true;
-
                     }
                 }
         }
@@ -208,8 +208,7 @@ public class CreateTerm extends AppCompatActivity {
                 Term oldTerm = new Term(getIntent().getIntExtra("termID", -1), screenName, screenDate, screenDate2);
                 repository.update(oldTerm);
             }
-
-            Intent intent = new Intent(CreateTerm.this, MainActivity.class);
+            Intent intent = new Intent(CreateTerm.this, TermList.class);
             startActivity(intent);
         }
     }

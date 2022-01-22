@@ -17,12 +17,11 @@ import com.example.c196schedulingapp.Entity.Assessment;
 import com.example.c196schedulingapp.Entity.Course;
 import com.example.c196schedulingapp.Entity.Term;
 import com.example.c196schedulingapp.R;
-import com.example.c196schedulingapp.Util.ASSESSMENT_TYPE;
 
 import java.util.Date;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class TermList extends AppCompatActivity {
 
     private TermRepo termRepo;
     private CourseRepo courseRepo;
@@ -52,11 +51,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void floatingActionButton(View view) {
-        Intent intent = new Intent(MainActivity.this, CreateTerm.class);
+        Intent intent = new Intent(TermList.this, CreateTerm.class);
         startActivity(intent);
     }
 
-    public boolean onOptionsItemSelected(MenuItem item) {
+   /* public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
                 this.finish();
@@ -78,13 +77,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    */
+
     public void setSampleDatabase(){
         ++testCount;
         Term term = new Term(1, "Term1", java.util.Calendar.getInstance().getTime(),new  Date("11/01/2022"));
         termRepo.insert(term);
         Term term2 = new Term(2, "Term2",java.util.Calendar.getInstance().getTime(),new  Date("11/01/2022"));
         termRepo.insert(term2);
-        Course course = new Course(1, "Test Course", term.getTermID(), "Completed", "Nathan", "888888888", "Email",new  Date("11/01/2022"),new  Date("11/01/2022"));
+        Course course = new Course(1, "Test Course", term.getTermID(), "Completed", "Nathan", "888888888", "Email",new  Date("11/01/2022"),new  Date("11/01/2022"),"");
         courseRepo.insert(course);
         Assessment assessment= new Assessment(1,course.getCourseID(),"Test Assessment",new  Date("11/01/2022"),new  Date("11/01/2022"));
         assessmentRepo.insert(assessment);

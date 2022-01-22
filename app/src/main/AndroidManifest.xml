@@ -10,16 +10,17 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.C196SchedulingApp" >
         <activity
-            android:name=".UI.MainActivity"
+            android:name=".UI.TermList"
+            android:label="Term List"
             android:exported="false" />
         <activity
             android:name=".UI.CreateAssessment"
             android:exported="false"
-            android:label="Create Assessment" />
+            android:label="Assessment Info" />
         <activity
             android:name=".UI.CreateCourse"
             android:exported="false"
-            android:label="Create Course" />
+            android:label="Course Info" />
 
         <receiver
             android:name=".UI.MyReceiver"
@@ -29,7 +30,7 @@
         <activity
             android:name=".UI.CreateTerm"
             android:exported="false"
-            android:label="Create Term" />
+            android:label="Term Info" />
         <activity
             android:name=".UI.Home"
             android:exported="true" >

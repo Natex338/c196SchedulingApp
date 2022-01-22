@@ -14,12 +14,11 @@ public class Home extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-
-
     }
 
     public void onLogin(View view) {
-        Intent intent = new Intent(Home.this, MainActivity.class);
+        Intent intent = new Intent(Home.this, TermList.class);
         startActivity(intent);
     }
+
 }

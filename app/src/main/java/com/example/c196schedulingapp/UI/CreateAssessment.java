@@ -24,6 +24,7 @@ import com.example.c196schedulingapp.Util.DateParse;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
@@ -71,7 +72,6 @@ public class CreateAssessment extends AppCompatActivity {
              }
         }
 
-
         date1 = new DatePickerDialog.OnDateSetListener() {
 
             @Override
@@ -92,7 +92,6 @@ public class CreateAssessment extends AppCompatActivity {
                 updateLabelEnd();
             }
         };
-
         editSDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -101,7 +100,6 @@ public class CreateAssessment extends AppCompatActivity {
                         myCalendar.get(Calendar.DAY_OF_MONTH)).show();
             }
         });
-
         editEDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -110,7 +108,6 @@ public class CreateAssessment extends AppCompatActivity {
                         myCalendar.get(Calendar.DAY_OF_MONTH)).show();
             }
         });
-
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -156,7 +153,6 @@ public class CreateAssessment extends AppCompatActivity {
         return true;
     }
 
-
     public void onCancel(View view) {
         this.finish();
     }
@@ -177,12 +173,11 @@ public class CreateAssessment extends AppCompatActivity {
 
 
            if (assessmentName == null) {
-               assessmentID = (assessmentRepo.getAllAssessments().size());
+               assessmentID = (assessmentRepo.getAllAssessments().size()-1);
                Assessment newAssessment = new Assessment(++assessmentID, courseID,screenName,screenDate, screenDate2);
                assessmentRepo.insert(newAssessment);
 
            } else {
-
                Assessment oldAssessment = new Assessment(getIntent().getIntExtra("assessmentID", -1),courseID, screenName,screenDate, screenDate2);
                assessmentRepo.update(oldAssessment);
            }

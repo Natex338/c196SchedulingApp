@@ -27,6 +27,7 @@ import com.example.c196schedulingapp.Entity.Course;
 import com.example.c196schedulingapp.Entity.Term;
 import com.example.c196schedulingapp.R;
 import com.example.c196schedulingapp.Util.DateParse;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -44,6 +45,7 @@ public class CreateCourse extends AppCompatActivity implements AdapterView.OnIte
     String instructorPhone;
     String instructorEmail;
     String status;
+    String optionalNotes;
 
     EditText editName;
     EditText editSDate;
@@ -51,7 +53,7 @@ public class CreateCourse extends AppCompatActivity implements AdapterView.OnIte
     EditText editInstructor;
     EditText editInstructorEmail;
     EditText editInstructorPhone;
-
+    EditText editOptionalText;
 
     int courseID;
     int termID;
@@ -79,7 +81,6 @@ public class CreateCourse extends AppCompatActivity implements AdapterView.OnIte
         status = getIntent().getStringExtra("status");
         spinner.setSelection(arrayAdapter.getPosition(status));
 
-
         name = getIntent().getStringExtra("courseTitle");
         editName = findViewById(R.id.courseName);
         editName.setText(name);
@@ -104,6 +105,10 @@ public class CreateCourse extends AppCompatActivity implements AdapterView.OnIte
         editInstructorPhone = findViewById(R.id.instructorPhone);
         editInstructorPhone.setText(instructorPhone);
 
+        optionalNotes = getIntent().getStringExtra("optionalNotes");
+        editOptionalText =findViewById(R.id.optionalNotes);
+        editOptionalText.setText(optionalNotes);
+
         courseID = getIntent().getIntExtra("courseID", -1);
         termID = getIntent().getIntExtra("termID", -1);
 
@@ -113,26 +118,27 @@ public class CreateCourse extends AppCompatActivity implements AdapterView.OnIte
                 termID = extras.getInt("key");
             }
         }
+
+        if (name==null){
+            FloatingActionButton button = findViewById(R.id.floatingActionButton);
+            button.hide();
+        }
         courseRepo = new CourseRepo(getApplication());
         assessmentRepo= new AssessmentRepo(getApplication());
 
         RecyclerView recyclerView = findViewById(R.id.recyclerAssessmentView);
         List<Assessment> allAssessment = new ArrayList<>();
-        allAssessment.addAll(assessmentRepo.getAllAssessments());
-
         for (Assessment assessment : assessmentRepo.getAllAssessments()) {
             if (assessment.getCourseID() == courseID)
                 allAssessment.add(assessment);
         }
 
+        editOptionalText.setVisibility(View.GONE);
+
         final AssessmentViewAdapter assessmentAdapter = new AssessmentViewAdapter(this);
         recyclerView.setAdapter(assessmentAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         assessmentAdapter.setAssessments(allAssessment);
-
-
-
-
 
 
         date1 = new DatePickerDialog.OnDateSetListener() {
@@ -178,7 +184,7 @@ public class CreateCourse extends AppCompatActivity implements AdapterView.OnIte
     }
 
     public boolean onCreateOptionsMenu(Menu menu){
-        getMenuInflater().inflate(R.menu.menu,menu);
+        getMenuInflater().inflate(R.menu.courses_menu,menu);
         return true;
     }
 
@@ -219,18 +225,16 @@ public class CreateCourse extends AppCompatActivity implements AdapterView.OnIte
             case R.id.refresh:
                 RecyclerView recyclerView = findViewById(R.id.recyclerAssessmentView);
                 List<Assessment> allAssessment = new ArrayList<>();
-                allAssessment.addAll(assessmentRepo.getAllAssessments());
-
                 for (Assessment assessment : assessmentRepo.getAllAssessments()) {
                     if (assessment.getCourseID() == courseID)
                         allAssessment.add(assessment);
                 }
-
                 final AssessmentViewAdapter assessmentAdapter = new AssessmentViewAdapter(this);
                 recyclerView.setAdapter(assessmentAdapter);
                 recyclerView.setLayoutManager(new LinearLayoutManager(this));
                 assessmentAdapter.setAssessments(allAssessment);
-
+            case R.id.showNotes:
+                editOptionalText.setVisibility(View.VISIBLE);
 
         }
         return super.onOptionsItemSelected(item);
@@ -261,11 +265,11 @@ public class CreateCourse extends AppCompatActivity implements AdapterView.OnIte
             String screenInstructor = editInstructor.getText().toString();
             String screenInstructorEmail = editInstructorEmail.getText().toString();
             String screenInstructorPhone = editInstructorPhone.getText().toString();
+            String optionNotes= editOptionalText.getText().toString();
 
             if (courseID == -1) {
-                List<Course> allCourses = courseRepo.getAllCourses();
-                //courseID = allCourses.get(allCourses.size() - 1).getCourseID();
-                courseID = 1;
+                courseID = assessmentRepo.getAllAssessments().size()-1;
+               // courseID = 1;
                 System.out.println(courseRepo.getAllCourses().size());
                 Course newCourse = new Course(
                         ++courseID,
@@ -276,11 +280,11 @@ public class CreateCourse extends AppCompatActivity implements AdapterView.OnIte
                         screenInstructorPhone,
                         screenInstructorEmail,
                         screenDate,
-                        screenDate2);
+                        screenDate2,optionNotes);
                 courseRepo.insert(newCourse);
             } else {
                 System.out.println(termID);
-                Course oldCourse = new Course(courseID, screenName, termID, status, screenInstructor, screenInstructorPhone, screenInstructorEmail, screenDate, screenDate2);
+                Course oldCourse = new Course(courseID, screenName, termID, status, screenInstructor, screenInstructorPhone, screenInstructorEmail, screenDate, screenDate2,optionNotes);
                 courseRepo.update(oldCourse);
             }
         }
@@ -307,7 +311,6 @@ public class CreateCourse extends AppCompatActivity implements AdapterView.OnIte
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         status = parent.getItemAtPosition(position).toString();
-        Toast.makeText(parent.getContext(), status, Toast.LENGTH_SHORT).show();
     }
 
     @Override
