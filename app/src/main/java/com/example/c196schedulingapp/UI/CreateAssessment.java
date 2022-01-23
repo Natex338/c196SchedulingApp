@@ -44,7 +44,7 @@ public class CreateAssessment extends AppCompatActivity {
     int courseID;
     int assessmentID;
     int numAlert;
-    String radioIDSelection="";
+    String radioIDSelection;
     AssessmentRepo assessmentRepo;
     DatePickerDialog.OnDateSetListener date1;
     DatePickerDialog.OnDateSetListener date2;
@@ -85,10 +85,9 @@ public class CreateAssessment extends AppCompatActivity {
             if (radioIDSelection.equalsIgnoreCase("Performance Assessment")) {
                 radioButtonPA.setChecked(true);
             } else if (radioIDSelection.equalsIgnoreCase("Objective Assessment")) {
-
                 radioButtonOA.setChecked(true);
             } else
-                radioButtonPA.setChecked(true);
+                radioButtonOA.setChecked(true);
 
         }
 
