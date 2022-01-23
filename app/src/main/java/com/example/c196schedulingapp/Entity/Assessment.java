@@ -15,16 +15,16 @@ public class Assessment {
     private String assessmentName;
     private Date startDate;
     private Date endDate;
-   // private Enum ASSESSMENT_TYPE;
+    private String assessmentType;
 
 
-    public Assessment(int assessmentID, int courseID, String assessmentName, Date startDate, Date endDate){
+    public Assessment(int assessmentID, int courseID, String assessmentName, Date startDate, Date endDate,String assessmentType){
         this.assessmentID =assessmentID;
         this.courseID=courseID;
         this.assessmentName=assessmentName;
         this.startDate=startDate;
         this.endDate=endDate;
-        //this.ASSESSMENT_TYPE=assessmentType;
+        this.assessmentType =assessmentType;
     }
 
     public int getAssessmentID() {
@@ -67,16 +67,12 @@ public class Assessment {
         this.endDate = endDate;
     }
 
-   // public Enum getASSESSMENT_TYPE() {
-    //    return ASSESSMENT_TYPE;
- //   }
 
-   // public void setASSESSMENT_TYPE(Enum ASSESSMENT_TYPE) {
-  //      this.ASSESSMENT_TYPE = ASSESSMENT_TYPE;
-  //  }
+    public String getAssessmentType() {
+        return assessmentType;
+    }
 
-
-
-
-
+    public void setAssessmentType(String assessmentType) {
+        this.assessmentType = assessmentType;
+    }
 }

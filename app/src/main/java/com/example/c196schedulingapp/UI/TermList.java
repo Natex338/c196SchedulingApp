@@ -87,7 +87,7 @@ public class TermList extends AppCompatActivity {
         termRepo.insert(term2);
         Course course = new Course(1, "Test Course", term.getTermID(), "Completed", "Nathan", "888888888", "Email",new  Date("11/01/2022"),new  Date("11/01/2022"),"");
         courseRepo.insert(course);
-        Assessment assessment= new Assessment(1,course.getCourseID(),"Test Assessment",new  Date("11/01/2022"),new  Date("11/01/2022"));
+        Assessment assessment= new Assessment(1,course.getCourseID(),"Test Assessment",new  Date("11/01/2022"),new  Date("11/01/2022"),"Objective Assessment");
         assessmentRepo.insert(assessment);
     }
 

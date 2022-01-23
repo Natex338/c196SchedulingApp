@@ -140,7 +140,6 @@ public class CreateCourse extends AppCompatActivity implements AdapterView.OnIte
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         assessmentAdapter.setAssessments(allAssessment);
 
-
         date1 = new DatePickerDialog.OnDateSetListener() {
 
             @Override

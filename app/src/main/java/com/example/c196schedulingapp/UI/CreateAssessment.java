@@ -11,8 +11,11 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.example.c196schedulingapp.Database.AssessmentRepo;
@@ -36,12 +39,16 @@ public class CreateAssessment extends AppCompatActivity {
     EditText editName;
     EditText editSDate;
     EditText editEDate;
+    RadioButton radioButtonOA;
+    RadioButton radioButtonPA;
     int courseID;
     int assessmentID;
     int numAlert;
+    String radioIDSelection="";
     AssessmentRepo assessmentRepo;
     DatePickerDialog.OnDateSetListener date1;
     DatePickerDialog.OnDateSetListener date2;
+    RadioGroup radioGroup;
     final Calendar myCalendar = Calendar.getInstance();
 
     @Override
@@ -65,6 +72,27 @@ public class CreateAssessment extends AppCompatActivity {
 
         assessmentRepo = new AssessmentRepo(getApplication());
         courseID = getIntent().getIntExtra("courseID", -1);
+
+       // radioGroup = findViewById(R.id.radioGroup);
+       // RadioGroup rb1 = (RadioGroup)findViewById(R.id.radioGroup);
+
+
+        radioButtonOA =(RadioButton)findViewById(R.id.radioButton1);
+        radioButtonPA =(RadioButton)findViewById(R.id.radioButton2);
+
+        if(radioIDSelection.equalsIgnoreCase("Performance Assessment"))
+        {
+            radioButtonPA.setChecked(true);
+        }
+        else if(radioIDSelection.equalsIgnoreCase("Objective Assessment")){
+
+            radioButtonOA.setChecked(true);
+        }
+        else
+            radioButtonPA.setChecked(true);
+
+
+
 
         if (courseID==-1) {
                 Bundle extras = getIntent().getExtras();
@@ -174,11 +202,11 @@ public class CreateAssessment extends AppCompatActivity {
 
            if (assessmentName == null) {
                assessmentID = (assessmentRepo.getAllAssessments().size()-1);
-               Assessment newAssessment = new Assessment(++assessmentID, courseID,screenName,screenDate, screenDate2);
+               Assessment newAssessment = new Assessment(++assessmentID, courseID,screenName,screenDate, screenDate2, radioIDSelection);
                assessmentRepo.insert(newAssessment);
 
            } else {
-               Assessment oldAssessment = new Assessment(getIntent().getIntExtra("assessmentID", -1),courseID, screenName,screenDate, screenDate2);
+               Assessment oldAssessment = new Assessment(getIntent().getIntExtra("assessmentID", -1),courseID, screenName,screenDate, screenDate2,radioIDSelection);
                assessmentRepo.update(oldAssessment);
            }
        }
@@ -195,5 +223,14 @@ public class CreateAssessment extends AppCompatActivity {
         String myFormat = "MM/dd/yy"; //In which you need put here
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
         editEDate.setText(sdf.format(myCalendar.getTime()));
+    }
+
+    public void checkButton(View view) {
+        int radioID = radioGroup.getCheckedRadioButtonId();
+        radioButtonOA = findViewById(radioID);
+        radioIDSelection = "" + radioButtonOA.getText();
+        Toast.makeText(this, "Selected Radio Button: " + radioButtonOA.getText(),
+                Toast.LENGTH_SHORT).show();
+
     }
 }
