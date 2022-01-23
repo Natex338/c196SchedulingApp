@@ -221,6 +221,8 @@ public class CreateCourse extends AppCompatActivity implements AdapterView.OnIte
                 AlarmManager alarmManager2=(AlarmManager) getSystemService(Context.ALARM_SERVICE);
                 alarmManager2.set(AlarmManager.RTC_WAKEUP, trigger2, sender2);
                 return true;
+            case R.id.showNotes:
+                editOptionalText.setVisibility(View.VISIBLE);
             case R.id.refresh:
                 RecyclerView recyclerView = findViewById(R.id.recyclerAssessmentView);
                 List<Assessment> allAssessment = new ArrayList<>();
@@ -232,8 +234,8 @@ public class CreateCourse extends AppCompatActivity implements AdapterView.OnIte
                 recyclerView.setAdapter(assessmentAdapter);
                 recyclerView.setLayoutManager(new LinearLayoutManager(this));
                 assessmentAdapter.setAssessments(allAssessment);
-            case R.id.showNotes:
-                editOptionalText.setVisibility(View.VISIBLE);
+
+
 
         }
         return super.onOptionsItemSelected(item);
@@ -267,7 +269,7 @@ public class CreateCourse extends AppCompatActivity implements AdapterView.OnIte
             String optionNotes= editOptionalText.getText().toString();
 
             if (courseID == -1) {
-                courseID = assessmentRepo.getAllAssessments().size()-1;
+                courseID = assessmentRepo.getAllAssessments().size();
                // courseID = 1;
                 System.out.println(courseRepo.getAllCourses().size());
                 Course newCourse = new Course(

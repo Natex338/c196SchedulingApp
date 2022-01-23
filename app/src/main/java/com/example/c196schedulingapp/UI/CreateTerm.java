@@ -201,8 +201,12 @@ public class CreateTerm extends AppCompatActivity {
             Date screenDate2 = DateParse.dateParse(editEDate.getText().toString());
 
             if (name == null) {
-                termId = (repository.getAllTerms().size()-1);
-                Term newTerm = new Term(++termId, screenName, screenDate, screenDate2);
+                termId = repository.getAllTerms().size();
+                Term newTerm = new Term(
+                        ++termId,
+                        screenName,
+                        screenDate,
+                        screenDate2);
                 repository.insert(newTerm);
             } else {
                 Term oldTerm = new Term(getIntent().getIntExtra("termID", -1), screenName, screenDate, screenDate2);

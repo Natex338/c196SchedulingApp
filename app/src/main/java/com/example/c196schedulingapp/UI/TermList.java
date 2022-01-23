@@ -77,7 +77,7 @@ public class TermList extends AppCompatActivity {
     }
 
 
-    */
+
 
     public void setSampleDatabase(){
         ++testCount;
@@ -90,5 +90,5 @@ public class TermList extends AppCompatActivity {
         Assessment assessment= new Assessment(1,course.getCourseID(),"Test Assessment",new  Date("11/01/2022"),new  Date("11/01/2022"),"Objective Assessment");
         assessmentRepo.insert(assessment);
     }
-
+ */
 }

@@ -72,26 +72,25 @@ public class CreateAssessment extends AppCompatActivity {
 
         assessmentRepo = new AssessmentRepo(getApplication());
         courseID = getIntent().getIntExtra("courseID", -1);
-
-       // radioGroup = findViewById(R.id.radioGroup);
+        radioGroup = findViewById(R.id.radioGroup);
        // RadioGroup rb1 = (RadioGroup)findViewById(R.id.radioGroup);
+
+        radioIDSelection= getIntent().getStringExtra("assessmentType");
 
 
         radioButtonOA =(RadioButton)findViewById(R.id.radioButton1);
         radioButtonPA =(RadioButton)findViewById(R.id.radioButton2);
 
-        if(radioIDSelection.equalsIgnoreCase("Performance Assessment"))
-        {
-            radioButtonPA.setChecked(true);
+        if (radioIDSelection!=null) {
+            if (radioIDSelection.equalsIgnoreCase("Performance Assessment")) {
+                radioButtonPA.setChecked(true);
+            } else if (radioIDSelection.equalsIgnoreCase("Objective Assessment")) {
+
+                radioButtonOA.setChecked(true);
+            } else
+                radioButtonPA.setChecked(true);
+
         }
-        else if(radioIDSelection.equalsIgnoreCase("Objective Assessment")){
-
-            radioButtonOA.setChecked(true);
-        }
-        else
-            radioButtonPA.setChecked(true);
-
-
 
 
         if (courseID==-1) {
@@ -201,7 +200,7 @@ public class CreateAssessment extends AppCompatActivity {
 
 
            if (assessmentName == null) {
-               assessmentID = (assessmentRepo.getAllAssessments().size()-1);
+               assessmentID = assessmentRepo.getAllAssessments().size();
                Assessment newAssessment = new Assessment(++assessmentID, courseID,screenName,screenDate, screenDate2, radioIDSelection);
                assessmentRepo.insert(newAssessment);
 
@@ -227,8 +226,8 @@ public class CreateAssessment extends AppCompatActivity {
 
     public void checkButton(View view) {
         int radioID = radioGroup.getCheckedRadioButtonId();
-        radioButtonOA = findViewById(radioID);
-        radioIDSelection = "" + radioButtonOA.getText();
+        RadioButton oncSelected = findViewById(radioID);
+        radioIDSelection = "" + oncSelected.getText();
         Toast.makeText(this, "Selected Radio Button: " + radioButtonOA.getText(),
                 Toast.LENGTH_SHORT).show();
 
