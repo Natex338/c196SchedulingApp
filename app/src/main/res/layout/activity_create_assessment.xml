@@ -6,6 +6,20 @@
     android:layout_height="match_parent"
     tools:context=".UI.CreateAssessment">
 
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/floatingActionButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="13dp"
+        android:layout_marginBottom="18dp"
+        android:clickable="true"
+        android:minWidth="32dp"
+        android:minHeight="32dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@android:drawable/ic_menu_add" />
+
     <ScrollView
         android:id="@+id/scrollView3"
         android:layout_width="0dp"
@@ -30,42 +44,32 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
+
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:text="Assessment Name" />
 
                 <EditText
                     android:id="@+id/assessmentName"
-                    android:layout_width="match_parent"
+                    android:layout_width="200dp"
                     android:layout_height="wrap_content" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:focusable="false"
-                    android:text="Start Date" />
+                    android:text="Assessment Start Date" />
 
                 <EditText
                     android:id="@+id/assessmentStart"
-                    android:layout_width="150dp"
-                    android:layout_height="wrap_content"
-                    android:focusable="false" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="End Date" />
-
-                <EditText
-                    android:id="@+id/assessmentEnd"
-                    android:layout_width="150dp"
+                    android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:focusable="false" />
             </LinearLayout>
@@ -76,12 +80,29 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:layout_width="match_parent"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:text="Assessment End Date" />
+
+                <EditText
+                    android:id="@+id/assessmentEnd"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:focusable="false" />
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:text="Assessment Type" />
 
             </LinearLayout>
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -90,20 +111,19 @@
                 <RadioGroup
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="horizontal"
                     android:id="@+id/radioGroup">
+
                     <RadioButton
                         android:id="@+id/radioButton1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Performance Assessment"
-                        android:onClick="checkButton" />
+                        android:text="Performance Assessment" />
+
                     <RadioButton
                         android:id="@+id/radioButton2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Objective Assessment"
-                        android:onClick="checkButton" />
+                        android:text="Objective Assessment" />
                 </RadioGroup>
             </LinearLayout>
 

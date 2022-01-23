@@ -14,7 +14,7 @@ import androidx.core.app.NotificationManagerCompat;
 import com.example.c196schedulingapp.R;
 
 public class MyReceiver extends BroadcastReceiver {
-    String channel_id="Test";
+    String channel_id="Scheduling App";
     static int  notificationID;
 
     @Override
@@ -26,8 +26,9 @@ public class MyReceiver extends BroadcastReceiver {
         createNotificationChannel(context, channel_id);
         Notification n = new NotificationCompat.Builder(context, channel_id)
                 .setSmallIcon(R.drawable.ic_launcher_foreground)
+                .setChannelId(channel_id)
                 .setContentText(intent.getStringExtra("key"))
-                .setContentTitle("NotificationTest").build();
+                .setContentTitle("Course Alert").build();
 
         NotificationManager notificationManager = (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.notify(notificationID++,n);

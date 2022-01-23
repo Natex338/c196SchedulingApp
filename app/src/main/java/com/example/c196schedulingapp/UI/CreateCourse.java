@@ -65,6 +65,9 @@ public class CreateCourse extends AppCompatActivity implements AdapterView.OnIte
     DatePickerDialog.OnDateSetListener date2;
     final Calendar myCalendar = Calendar.getInstance();
 
+    List<Assessment> allAssessment = new ArrayList<>();
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -127,7 +130,7 @@ public class CreateCourse extends AppCompatActivity implements AdapterView.OnIte
         assessmentRepo= new AssessmentRepo(getApplication());
 
         RecyclerView recyclerView = findViewById(R.id.recyclerAssessmentView);
-        List<Assessment> allAssessment = new ArrayList<>();
+        //List<Assessment> allAssessment = new ArrayList<>();
         for (Assessment assessment : assessmentRepo.getAllAssessments()) {
             if (assessment.getCourseID() == courseID)
                 allAssessment.add(assessment);
@@ -191,6 +194,16 @@ public class CreateCourse extends AppCompatActivity implements AdapterView.OnIte
         switch (item.getItemId()) {
             case android.R.id.home:
                 this.finish();
+                return true;
+            case R.id.delete:
+                for (Course course : courseRepo.getAllCourses()){
+                    if (course.getCourseID()==courseID){
+                        courseRepo.delete(course);
+                        Toast.makeText(this,"Course Deleted",Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(getApplicationContext(), TermList.class);
+                        startActivity(intent);
+                    }
+                }
                 return true;
             case R.id.share:
                 // TODO fix to send correct data
@@ -283,6 +296,7 @@ public class CreateCourse extends AppCompatActivity implements AdapterView.OnIte
                         screenDate,
                         screenDate2,optionNotes);
                 courseRepo.insert(newCourse);
+
             } else {
                 System.out.println(termID);
                 Course oldCourse = new Course(courseID, screenName, termID, status, screenInstructor, screenInstructorPhone, screenInstructorEmail, screenDate, screenDate2,optionNotes);

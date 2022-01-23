@@ -139,28 +139,28 @@ public class CreateTerm extends AppCompatActivity {
                 // TODO fix to send correct data
                 Intent sendIntent = new Intent();
                 sendIntent.setAction(Intent.ACTION_SEND);
-                sendIntent.putExtra(Intent.EXTRA_TEXT,"This is Text to send"+ editName.getText());
-                sendIntent.putExtra(Intent.EXTRA_TITLE,"This is a sent Title");
+                sendIntent.putExtra(Intent.EXTRA_TEXT, "This is Text to send" + editName.getText());
+                sendIntent.putExtra(Intent.EXTRA_TITLE, "This is a sent Title");
                 sendIntent.setType("text/plain");
-                Intent shareIntent = Intent.createChooser(sendIntent,null);
+                Intent shareIntent = Intent.createChooser(sendIntent, null);
                 startActivity(shareIntent);
                 return true;
             case R.id.notifyStart:
                 String dateFromString = editSDate.getText().toString();
                 long trigger = DateParse.dateParse(dateFromString).getTime();
-                Intent intent  = new Intent(CreateTerm.this,MyReceiver.class);
-                intent.putExtra("key","?");
-                PendingIntent sender= PendingIntent.getBroadcast(CreateTerm.this, ++numAlert, intent, 0);
-                AlarmManager alarmManager=(AlarmManager) getSystemService(Context.ALARM_SERVICE);
+                Intent intent = new Intent(CreateTerm.this, MyReceiver.class);
+                intent.putExtra("key", "?");
+                PendingIntent sender = PendingIntent.getBroadcast(CreateTerm.this, ++numAlert, intent, 0);
+                AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
                 alarmManager.set(AlarmManager.RTC_WAKEUP, trigger, sender);
                 return true;
             case R.id.notifyEnd:
                 String dateFromString2 = editEDate.getText().toString();
                 long trigger2 = DateParse.dateParse(dateFromString2).getTime();
-                Intent intent2  = new Intent(CreateTerm.this,MyReceiver.class);
-                intent2.putExtra("key","?");
-                PendingIntent sender2= PendingIntent.getBroadcast(CreateTerm.this, ++numAlert, intent2, 0);
-                AlarmManager alarmManager2=(AlarmManager) getSystemService(Context.ALARM_SERVICE);
+                Intent intent2 = new Intent(CreateTerm.this, MyReceiver.class);
+                intent2.putExtra("key", "?");
+                PendingIntent sender2 = PendingIntent.getBroadcast(CreateTerm.this, ++numAlert, intent2, 0);
+                AlarmManager alarmManager2 = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
                 alarmManager2.set(AlarmManager.RTC_WAKEUP, trigger2, sender2);
                 return true;
             case R.id.refresh:
@@ -174,14 +174,28 @@ public class CreateTerm extends AppCompatActivity {
                 recyclerView.setAdapter(courseAdapter);
                 recyclerView.setLayoutManager(new LinearLayoutManager(this));
                 courseAdapter.setCourse(allCourse);
+                return true;
             case R.id.delete:
-                String message="";
-                boolean termWithCourses=false;
-                for (Course course : courseRepo.getAllCourses()){
-                    if (course.getTermID()==termId){
-                        termWithCourses=true;
+                boolean termWithoutCourses= true;
+                for (Course course : courseRepo.getAllCourses()) {
+                    if (course.getTermID() == termId) {
+                        termWithoutCourses = false;
                     }
                 }
+                if (termWithoutCourses) {
+                    for (Term term : repository.getAllTerms()) {
+                        if (term.getTermID() == termId) {
+                            repository.delete(term);
+                            Toast.makeText(this, "Term Deleted", Toast.LENGTH_SHORT).show();
+                            Intent intent3 = new Intent(getApplicationContext(), TermList.class);
+                            startActivity(intent3);
+                        }
+                    }
+                }
+                else {
+                    Toast.makeText(this, "Term Has Course, Delete Courses first", Toast.LENGTH_SHORT).show();
+                }
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }

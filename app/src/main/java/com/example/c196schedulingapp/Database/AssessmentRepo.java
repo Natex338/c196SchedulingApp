@@ -46,7 +46,14 @@ public class AssessmentRepo {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-
+    }
+    public void delete(Assessment assessment){
+        databaseExecutor.execute(()-> mAssessmentDAO.delete(assessment));
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
 }

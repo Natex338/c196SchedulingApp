@@ -88,7 +88,6 @@ public class CreateAssessment extends AppCompatActivity {
                 radioButtonOA.setChecked(true);
             } else
                 radioButtonOA.setChecked(true);
-
         }
 
 
@@ -145,31 +144,40 @@ public class CreateAssessment extends AppCompatActivity {
                 // TODO fix to send correct data
                 Intent sendIntent = new Intent();
                 sendIntent.setAction(Intent.ACTION_SEND);
-                sendIntent.putExtra(Intent.EXTRA_TEXT,"This is Text to send"+ editName.getText());
-                sendIntent.putExtra(Intent.EXTRA_TITLE,"This is a sent Title");
+                sendIntent.putExtra(Intent.EXTRA_TEXT, "This is Text to send" + editName.getText());
+                sendIntent.putExtra(Intent.EXTRA_TITLE, "This is a sent Title");
                 sendIntent.setType("text/plain");
-                Intent shareIntent = Intent.createChooser(sendIntent,null);
+                Intent shareIntent = Intent.createChooser(sendIntent, null);
                 startActivity(shareIntent);
                 return true;
             case R.id.notifyStart:
                 String dateFromString = editSDate.getText().toString();
                 long trigger = DateParse.dateParse(dateFromString).getTime();
-                Intent intent  = new Intent(CreateAssessment.this,MyReceiver.class);
-                intent.putExtra("key","?");
-                PendingIntent sender= PendingIntent.getBroadcast(CreateAssessment.this, ++numAlert, intent, 0);
-                AlarmManager alarmManager=(AlarmManager) getSystemService(Context.ALARM_SERVICE);
+                Intent intent = new Intent(CreateAssessment.this, MyReceiver.class);
+                intent.putExtra("key", "Alert! Assessment: "+ assessmentName+ " Starts: " + DateParse.dateParse(editSDate.getText().toString()));
+                PendingIntent sender = PendingIntent.getBroadcast(CreateAssessment.this, ++numAlert, intent, 0);
+                AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
                 alarmManager.set(AlarmManager.RTC_WAKEUP, trigger, sender);
                 return true;
             case R.id.notifyEnd:
                 String dateFromString2 = editEDate.getText().toString();
                 long trigger2 = DateParse.dateParse(dateFromString2).getTime();
-                Intent intent2  = new Intent(CreateAssessment.this,MyReceiver.class);
-                intent2.putExtra("key","?");
-                PendingIntent sender2= PendingIntent.getBroadcast(CreateAssessment.this, ++numAlert, intent2, 0);
-                AlarmManager alarmManager2=(AlarmManager) getSystemService(Context.ALARM_SERVICE);
+                Intent intent2 = new Intent(CreateAssessment.this, MyReceiver.class);
+                intent2.putExtra("key", "Alert! Assessment: "+ assessmentName+ " Ends: " + DateParse.dateParse(editEDate.getText().toString()));
+                PendingIntent sender2 = PendingIntent.getBroadcast(CreateAssessment.this, ++numAlert, intent2, 0);
+                AlarmManager alarmManager2 = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
                 alarmManager2.set(AlarmManager.RTC_WAKEUP, trigger2, sender2);
                 return true;
-
+            case R.id.delete:
+                for (Assessment assessment : assessmentRepo.getAllAssessments()) {
+                    if (assessment.getAssessmentID() == assessmentID) {
+                        assessmentRepo.delete(assessment);
+                        Toast.makeText(this, "Assessment Deleted", Toast.LENGTH_SHORT).show();
+                        Intent intent3 = new Intent(getApplicationContext(), TermList.class);
+                        startActivity(intent3);
+                    }
+                }
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
