@@ -65,9 +65,6 @@ public class CreateCourse extends AppCompatActivity implements AdapterView.OnIte
     DatePickerDialog.OnDateSetListener date2;
     final Calendar myCalendar = Calendar.getInstance();
 
-    List<Assessment> allAssessment = new ArrayList<>();
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -130,7 +127,7 @@ public class CreateCourse extends AppCompatActivity implements AdapterView.OnIte
         assessmentRepo= new AssessmentRepo(getApplication());
 
         RecyclerView recyclerView = findViewById(R.id.recyclerAssessmentView);
-        //List<Assessment> allAssessment = new ArrayList<>();
+        List<Assessment> allAssessment = new ArrayList<>();
         for (Assessment assessment : assessmentRepo.getAllAssessments()) {
             if (assessment.getCourseID() == courseID)
                 allAssessment.add(assessment);
@@ -163,7 +160,6 @@ public class CreateCourse extends AppCompatActivity implements AdapterView.OnIte
                 updateLabelEnd();
             }
         };
-
         editSDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -173,7 +169,6 @@ public class CreateCourse extends AppCompatActivity implements AdapterView.OnIte
                         myCalendar.get(Calendar.DAY_OF_MONTH)).show();
             }
         });
-
         editEDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

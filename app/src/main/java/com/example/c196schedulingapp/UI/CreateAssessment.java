@@ -70,6 +70,8 @@ public class CreateAssessment extends AppCompatActivity {
         editEDate = findViewById(R.id.assessmentEnd);
         editEDate.setText(endDate);
 
+        assessmentID = getIntent().getIntExtra("assessmentID",-1);
+
         assessmentRepo = new AssessmentRepo(getApplication());
         courseID = getIntent().getIntExtra("courseID", -1);
         radioGroup = findViewById(R.id.radioGroup);
@@ -78,8 +80,8 @@ public class CreateAssessment extends AppCompatActivity {
         radioIDSelection= getIntent().getStringExtra("assessmentType");
 
 
-        radioButtonOA =(RadioButton)findViewById(R.id.radioButton1);
-        radioButtonPA =(RadioButton)findViewById(R.id.radioButton2);
+        radioButtonOA =(RadioButton)findViewById(R.id.radioButton2);
+        radioButtonPA =(RadioButton)findViewById(R.id.radioButton1);
 
         if (radioIDSelection!=null) {
             if (radioIDSelection.equalsIgnoreCase("Performance Assessment")) {
@@ -140,16 +142,6 @@ public class CreateAssessment extends AppCompatActivity {
             case android.R.id.home:
                 this.finish();
                 return true;
-            case R.id.share:
-                // TODO fix to send correct data
-                Intent sendIntent = new Intent();
-                sendIntent.setAction(Intent.ACTION_SEND);
-                sendIntent.putExtra(Intent.EXTRA_TEXT, "This is Text to send" + editName.getText());
-                sendIntent.putExtra(Intent.EXTRA_TITLE, "This is a sent Title");
-                sendIntent.setType("text/plain");
-                Intent shareIntent = Intent.createChooser(sendIntent, null);
-                startActivity(shareIntent);
-                return true;
             case R.id.notifyStart:
                 String dateFromString = editSDate.getText().toString();
                 long trigger = DateParse.dateParse(dateFromString).getTime();
@@ -183,7 +175,7 @@ public class CreateAssessment extends AppCompatActivity {
     }
 
     public boolean onCreateOptionsMenu(Menu menu){
-        getMenuInflater().inflate(R.menu.menu,menu);
+        getMenuInflater().inflate(R.menu.assessment_menu,menu);
         return true;
     }
 
@@ -235,8 +227,5 @@ public class CreateAssessment extends AppCompatActivity {
         int radioID = radioGroup.getCheckedRadioButtonId();
         RadioButton oncSelected = findViewById(radioID);
         radioIDSelection = "" + oncSelected.getText();
-        Toast.makeText(this, "Selected Radio Button: " + radioButtonOA.getText(),
-                Toast.LENGTH_SHORT).show();
-
     }
 }
