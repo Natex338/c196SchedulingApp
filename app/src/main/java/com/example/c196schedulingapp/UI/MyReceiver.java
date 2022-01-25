@@ -15,7 +15,7 @@ import com.example.c196schedulingapp.R;
 
 public class MyReceiver extends BroadcastReceiver {
     String channel_id="Scheduling App";
-    static int  notificationID;
+    public static int notificationID;
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -31,6 +31,7 @@ public class MyReceiver extends BroadcastReceiver {
                 .setContentTitle("Alert!").build();
 
         NotificationManager notificationManager = (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
+        System.out.println(notificationID);
         notificationManager.notify(notificationID++,n);
 
     }
