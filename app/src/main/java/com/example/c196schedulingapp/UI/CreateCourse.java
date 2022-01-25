@@ -205,7 +205,7 @@ public class CreateCourse extends AppCompatActivity implements AdapterView.OnIte
                 Intent sendIntent = new Intent();
                 sendIntent.setAction(Intent.ACTION_SEND);
                 sendIntent.putExtra(Intent.EXTRA_TEXT,"Course Name: "+ name+"\n"+ "Start Date: "+ startDate +"\n"+"End Date: "+ endDate+ "\n"+ "Status: "+status +"\n"
-                        + "\n"+"Course Instructor: "+ instructorName+ "\n"+"Email: "+ instructorEmail+ "\n"+"Phone: "+ instructorPhone+ "\n");
+                        + "\n"+"Course Instructor: "+ instructorName+ "\n"+"Email: "+ instructorEmail+ "\n"+"Phone: "+ instructorPhone+ "\n"+ " Courses Notes: "+optionalNotes);
                 sendIntent.putExtra(Intent.EXTRA_TITLE, "Share "+name +" Course Info");
                 sendIntent.setType("text/plain");
                 Intent shareIntent = Intent.createChooser(sendIntent,null);
@@ -224,13 +224,15 @@ public class CreateCourse extends AppCompatActivity implements AdapterView.OnIte
                 String dateFromString2 = editEDate.getText().toString();
                 long trigger2 = DateParse.dateParse(dateFromString2).getTime();
                 Intent intent2  = new Intent(CreateCourse.this,MyReceiver.class);
-                intent2.putExtra("key","Alert! Course: "+ name+ " starts: " + DateParse.dateParse(editEDate.getText().toString()));
+                intent2.putExtra("key","Alert! Course: "+ name+ " Ends: " + DateParse.dateParse(editEDate.getText().toString()));
                 PendingIntent sender2= PendingIntent.getBroadcast(CreateCourse.this, ++numAlert, intent2, 0);
                 AlarmManager alarmManager2=(AlarmManager) getSystemService(Context.ALARM_SERVICE);
                 alarmManager2.set(AlarmManager.RTC_WAKEUP, trigger2, sender2);
                 return true;
             case R.id.showNotes:
+                editOptionalText.setText(optionalNotes);
                 editOptionalText.setVisibility(View.VISIBLE);
+                return true;
             case R.id.refresh:
                 RecyclerView recyclerView = findViewById(R.id.recyclerAssessmentView);
                 List<Assessment> allAssessment = new ArrayList<>();
@@ -277,7 +279,7 @@ public class CreateCourse extends AppCompatActivity implements AdapterView.OnIte
             String optionNotes= editOptionalText.getText().toString();
 
             if (courseID == -1) {
-                courseID = assessmentRepo.getAllAssessments().size();
+                courseID = (assessmentRepo.getAllAssessments().size()-1);
                // courseID = 1;
                 System.out.println(courseRepo.getAllCourses().size());
                 Course newCourse = new Course(
