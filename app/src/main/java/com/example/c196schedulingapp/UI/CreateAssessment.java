@@ -43,7 +43,7 @@ public class CreateAssessment extends AppCompatActivity {
     RadioButton radioButtonPA;
     int courseID;
     int assessmentID;
-    int numAlert;
+    public static int numAlert;
     String radioIDSelection;
     AssessmentRepo assessmentRepo;
     DatePickerDialog.OnDateSetListener date1;
@@ -145,20 +145,20 @@ public class CreateAssessment extends AppCompatActivity {
             case R.id.notifyStart:
                 String dateFromString = editSDate.getText().toString();
                 long trigger = DateParse.dateParse(dateFromString).getTime();
-                Intent intent = new Intent(CreateAssessment.this, MyReceiver.class);
-                intent.putExtra("key", "Alert! Assessment: "+ assessmentName+ " Starts: " + DateParse.dateParse(editSDate.getText().toString()));
-                PendingIntent sender = PendingIntent.getBroadcast(CreateAssessment.this, ++numAlert, intent, 0);
+                Intent intentAStart = new Intent(CreateAssessment.this, MyReceiver.class);
+                intentAStart.putExtra("key", "Alert! Assessment: "+ assessmentName+ " Starts: " + DateParse.dateParse(editSDate.getText().toString()));
+                PendingIntent senderAStart = PendingIntent.getBroadcast(CreateAssessment.this, ++numAlert, intentAStart, 0);
                 AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-                alarmManager.set(AlarmManager.RTC_WAKEUP, trigger, sender);
+                alarmManager.set(AlarmManager.RTC_WAKEUP, trigger, senderAStart);
                 return true;
             case R.id.notifyEnd:
                 String dateFromString2 = editEDate.getText().toString();
                 long trigger2 = DateParse.dateParse(dateFromString2).getTime();
-                Intent intent2 = new Intent(CreateAssessment.this, MyReceiver.class);
-                intent2.putExtra("key", "Alert! Assessment: "+ assessmentName+ " Ends: " + DateParse.dateParse(editEDate.getText().toString()));
-                PendingIntent sender2 = PendingIntent.getBroadcast(CreateAssessment.this, ++numAlert, intent2, 0);
+                Intent intentAEnd = new Intent(CreateAssessment.this, MyReceiver.class);
+                intentAEnd.putExtra("key", "Alert! Assessment: "+ assessmentName+ " Ends: " + DateParse.dateParse(editEDate.getText().toString()));
+                PendingIntent senderAEnd = PendingIntent.getBroadcast(CreateAssessment.this, ++numAlert, intentAEnd, 0);
                 AlarmManager alarmManager2 = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-                alarmManager2.set(AlarmManager.RTC_WAKEUP, trigger2, sender2);
+                alarmManager2.set(AlarmManager.RTC_WAKEUP, trigger2, senderAEnd);
                 return true;
             case R.id.delete:
                 for (Assessment assessment : assessmentRepo.getAllAssessments()) {

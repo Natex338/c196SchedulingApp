@@ -28,7 +28,7 @@ public class MyReceiver extends BroadcastReceiver {
                 .setSmallIcon(R.drawable.ic_launcher_foreground)
                 .setChannelId(channel_id)
                 .setContentText(intent.getStringExtra("key"))
-                .setContentTitle("Course Alert").build();
+                .setContentTitle("Alert!").build();
 
         NotificationManager notificationManager = (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.notify(notificationID++,n);

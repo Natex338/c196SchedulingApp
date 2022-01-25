@@ -34,7 +34,7 @@ import java.util.Locale;
 import java.util.Objects;
 
 public class CreateTerm extends AppCompatActivity {
-    public int numAlert;
+    public static int numAlert;
     String name;
     String startDate;
     String endDate;
@@ -146,20 +146,20 @@ public class CreateTerm extends AppCompatActivity {
             case R.id.notifyStart:
                 String dateFromString = editSDate.getText().toString();
                 long trigger = DateParse.dateParse(dateFromString).getTime();
-                Intent intent = new Intent(CreateTerm.this, MyReceiver.class);
-                intent.putExtra("key", "Alert! Term: "+ name+ " starts: " + DateParse.dateParse(editSDate.getText().toString()));
-                PendingIntent sender = PendingIntent.getBroadcast(CreateTerm.this, ++numAlert, intent, 0);
+                Intent intentTStart = new Intent(CreateTerm.this, MyReceiver.class);
+                intentTStart.putExtra("key", "Alert! Term: "+ name+ " starts: " + DateParse.dateParse(editSDate.getText().toString()));
+                PendingIntent senderTStart = PendingIntent.getBroadcast(CreateTerm.this, ++numAlert, intentTStart, 0);
                 AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-                alarmManager.set(AlarmManager.RTC_WAKEUP, trigger, sender);
+                alarmManager.set(AlarmManager.RTC_WAKEUP, trigger, senderTStart);
                 return true;
             case R.id.notifyEnd:
                 String dateFromString2 = editEDate.getText().toString();
                 long trigger2 = DateParse.dateParse(dateFromString2).getTime();
-                Intent intent2 = new Intent(CreateTerm.this, MyReceiver.class);
-                intent2.putExtra("key", "Alert! Term: "+ name+ " Ends: " + DateParse.dateParse(editEDate.getText().toString()));
-                PendingIntent sender2 = PendingIntent.getBroadcast(CreateTerm.this, ++numAlert, intent2, 0);
+                Intent intentTEnd = new Intent(CreateTerm.this, MyReceiver.class);
+                intentTEnd.putExtra("key", "Alert! Term: "+ name+ " Ends: " + DateParse.dateParse(editEDate.getText().toString()));
+                PendingIntent senderTEnd = PendingIntent.getBroadcast(CreateTerm.this, ++numAlert, intentTEnd, 0);
                 AlarmManager alarmManager2 = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-                alarmManager2.set(AlarmManager.RTC_WAKEUP, trigger2, sender2);
+                alarmManager2.set(AlarmManager.RTC_WAKEUP, trigger2, senderTEnd);
                 return true;
             case R.id.refresh:
                 RecyclerView recyclerView = findViewById(R.id.recyclerCourseView);

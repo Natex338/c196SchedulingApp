@@ -214,20 +214,20 @@ public class CreateCourse extends AppCompatActivity implements AdapterView.OnIte
             case R.id.notifyStart:
                 String dateFromString = editSDate.getText().toString();
                 long trigger = DateParse.dateParse(dateFromString).getTime();
-                Intent intent  = new Intent(CreateCourse.this,MyReceiver.class);
-                intent.putExtra("key","Alert! Course: "+ name+ " starts: " + DateParse.dateParse(editSDate.getText().toString()));
-                PendingIntent sender= PendingIntent.getBroadcast(CreateCourse.this, ++numAlert, intent, 0);
+                Intent intentCStart  = new Intent(CreateCourse.this,MyReceiver.class);
+                intentCStart.putExtra("key","Alert! Course: "+ name+ " starts: " + DateParse.dateParse(editSDate.getText().toString()));
+                PendingIntent sender= PendingIntent.getBroadcast(CreateCourse.this, ++numAlert, intentCStart, 0);
                 AlarmManager alarmManager=(AlarmManager) getSystemService(Context.ALARM_SERVICE);
                 alarmManager.set(AlarmManager.RTC_WAKEUP, trigger, sender);
                 return true;
             case R.id.notifyEnd:
                 String dateFromString2 = editEDate.getText().toString();
                 long trigger2 = DateParse.dateParse(dateFromString2).getTime();
-                Intent intent2  = new Intent(CreateCourse.this,MyReceiver.class);
-                intent2.putExtra("key","Alert! Course: "+ name+ " Ends: " + DateParse.dateParse(editEDate.getText().toString()));
-                PendingIntent sender2= PendingIntent.getBroadcast(CreateCourse.this, ++numAlert, intent2, 0);
+                Intent intentCEnd  = new Intent(CreateCourse.this,MyReceiver.class);
+                intentCEnd.putExtra("key","Alert! Course: "+ name+ " Ends: " + DateParse.dateParse(editEDate.getText().toString()));
+                PendingIntent senderCEndDate= PendingIntent.getBroadcast(CreateCourse.this, ++numAlert, intentCEnd, 0);
                 AlarmManager alarmManager2=(AlarmManager) getSystemService(Context.ALARM_SERVICE);
-                alarmManager2.set(AlarmManager.RTC_WAKEUP, trigger2, sender2);
+                alarmManager2.set(AlarmManager.RTC_WAKEUP, trigger2, senderCEndDate);
                 return true;
             case R.id.showNotes:
                 editOptionalText.setText(optionalNotes);
